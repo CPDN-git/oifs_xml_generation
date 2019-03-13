@@ -46,7 +46,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
                         ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(2)+'.zip'                  
                         for iens in range(0,n_ens):  
                                 params['ensemble_member_number']=str(iens).zfill(2)
-				params['exptid']=anc.Get()
+				params['unique_member_id']=anc.Get()
 
                                 wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data)
 				WUs.append(wu)
@@ -55,7 +55,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 	# Add the workunits to the xml
 	outtreeroot.append(WUs)
        	
-	end_umid=params['exptid'] 
+	end_umid=params['unique_member_id'] 
 
         # Add in start and end umid to batch tags:
         batch['umid_start']=start_umid
