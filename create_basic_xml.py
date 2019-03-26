@@ -12,12 +12,15 @@ from xml.dom import minidom
 
 from create_xml_funcs import *
 
-def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid):
+def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, model_config):
 	print "Creating experiments... "
 	ic_ancil={}
 	# Start the xml document
   	outtreeroot=Element('Batch')
   	outtree=ElementTree(outtreeroot)
+
+	# Add in the model config
+        SubElement(outtreeroot, 'model_config').text=str(model_config)
 
 	# Add in the upload information
 	upload_handler,upload_template=get_upload_info(upload_loc)
@@ -44,7 +47,8 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 
                 for ia in range(0,n_analysis):
                         ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(2)+'.zip'                  
-                        for iens in range(0,n_ens):  
+                        params['analysis_member_number']=str(ia).zfill(2)
+			for iens in range(0,n_ens):  
                                 params['ensemble_member_number']=str(iens).zfill(2)
 				params['unique_member_id']=anc.Get()
 
@@ -102,18 +106,14 @@ def main():
         upload_loc="upload3"
         
 	# Set start umid		
-	start_umid = "a000"
+	start_umid = "b000"
+
+	model_config='40r1_T159.xml'
 
 	# Parameters for simulations
-        params['model_version']='oifs40r1v2'
         params['exptid']='gw3a'
-        params['horiz_resolution']=159
-        params['vert_resolution']=60
-        params['grid_type']='l_2'
         params['fclen']=1
         params['fclen_units']='days'
-        params['timestep']=3600
-        params['timestep_units']='seconds'
 
 
 	# Climate data and ifs data
@@ -129,7 +129,7 @@ def main():
         batch['tech_info']="Initialised with ERA5 data with 40 initial conditions"
         batch['proj']='TESTING'
 
-	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid)
+	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, model_config)
 
 	print 'Done!'
 
