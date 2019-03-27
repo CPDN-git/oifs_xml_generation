@@ -45,7 +45,7 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
                 SubElement(ica, param).text=str(value)	
 	
 	# Add ifs_data files
-	ifsd=Element('ifs_data')
+	ifsd=Element('ifsdata')
         ifsd_tree=ElementTree(ifsd)
 	for param,value in sorted(ifs_data.iteritems()):
         	SubElement(ifsd, param).text=str(value)

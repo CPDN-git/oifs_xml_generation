@@ -16,7 +16,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 	print "Creating experiments... "
 	ic_ancil={}
 	# Start the xml document
-  	outtreeroot=Element('Batch')
+  	outtreeroot=Element('batch')
   	outtree=ElementTree(outtreeroot)
 
 	# Add in the model config
