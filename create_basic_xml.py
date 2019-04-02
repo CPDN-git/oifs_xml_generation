@@ -12,7 +12,7 @@ from xml.dom import minidom
 
 from create_xml_funcs import *
 
-def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, app_name,model_config):
+def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, model_class,model_config):
 	print "Creating experiments... "
 	ic_ancil={}
 	# Start the xml document
@@ -20,7 +20,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
   	outtree=ElementTree(outtreeroot)
 
 	# Add in the model config
-	SubElement(outtreeroot, 'app_name').text=str(app_name)
+	SubElement(outtreeroot, 'model_class').text=str(model_class)
         SubElement(outtreeroot, 'model_config').text=str(model_config)
 
 	# Add in the upload information
@@ -109,7 +109,7 @@ def main():
 	# Set start umid		
 	start_umid = "b000"
 
-	app_name='openifs'
+	model_class='openifs'
 	model_config='40r1_T159.xml'
 
 	# Parameters for simulations
@@ -131,7 +131,7 @@ def main():
         batch['tech_info']="Initialised with ERA5 data with 40 initial conditions"
         batch['proj']='TESTING'
 
-	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, app_name, model_config)
+	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, model_class, model_config)
 
 	print 'Done!'
 
