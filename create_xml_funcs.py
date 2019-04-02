@@ -9,7 +9,8 @@ from ANC import *
 
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
-        upload_info_dict={"dev":("dev","http://vorvadoss.oerc.ox.ac.uk/cpdnboinc_dev_cgi/file_upload_handler"),\
+        upload_info_dict={"alpha":("alpha","http://alpha.cpdn.org/cgi-bin/file_upload_handler"),\
+		"dev":("dev","https://dev.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload2":("upload2","http://upload2.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload3":("upload3","http://upload3.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload4":("upload4","http://upload4.cpdn.org/cgi-bin/file_upload_handler"),\
@@ -72,4 +73,6 @@ def AddBatchInfo(batch):
         for param,value in sorted(batch.iteritems()):
                 SubElement(binf, param).text=str(value)
 
+	SubElement(binf, 'workunit_range').text="workunit_range"
+	SubElement(binf, 'batchid').text="batchid"
 	return binf
