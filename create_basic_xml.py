@@ -12,7 +12,7 @@ from xml.dom import minidom
 
 from create_xml_funcs import *
 
-def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, model_class,model_config):
+def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist):
 	print "Creating experiments... "
 	ic_ancil={}
 	# Start the xml document
@@ -22,6 +22,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 	# Add in the model config
 	SubElement(outtreeroot, 'model_class').text=str(model_class)
         SubElement(outtreeroot, 'model_config').text=str(model_config)
+	SubElement(outtreeroot, 'fullpos_namelist').text=str(fullpos_namelist)
 
 	# Add in the upload information
 	upload_handler,upload_template=get_upload_info(upload_loc)
@@ -109,8 +110,10 @@ def main():
 	# Set start umid		
 	start_umid = "b000"
 
+	# Set the model configuration
 	model_class='openifs'
 	model_config='40r1_T159.xml'
+	fullpos_namelist='test_fullpos.gz'
 
 	# Parameters for simulations
         params['exptid']='gw3a'
@@ -131,7 +134,7 @@ def main():
         batch['tech_info']="Initialised with ERA5 data with 40 initial conditions"
         batch['proj']='TESTING'
 
-	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, model_class, model_config)
+	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist)
 
 	print 'Done!'
 
