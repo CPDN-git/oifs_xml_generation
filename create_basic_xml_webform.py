@@ -4,7 +4,7 @@
 # Author  : Sarah Sparrow (modified from the CPDN script)
 # Purpose : create openIFS experiment xmls
 
-import os,sys
+import os,sys,time
 #from xml.etree.ElementTree import *
 import xml.etree.ElementTree as ET
 from ANC import *
@@ -75,9 +75,9 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
         ######## Write out the file ########
 	#Write overall tree stucture to output xml
 
-	print("here2")
+	timestr = time.strftime("%Y%m%d-%H%M%S")
         xml_out='wu_oifs_'+batch['name'].replace(" ","")+"_" +\
-                          start_umid + '_' + end_umid + '.xml'
+                          start_umid + '_' + end_umid + '_'+timestr+'.xml'
         if not os.path.exists(proj_dir+'/oifs_workgen/xml_staging'):
                     os.makedirs(proj_dir+'/oifs_workgen/xml_staging')
         print 'Writing to:',xml_out,'...'
@@ -91,12 +91,10 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 
 
 def main():
-	print("In python")
 	data=sys.argv[1]
 	
 	fdata=data.replace('\\','') 
 	form_data=literal_eval(fdata)
-	print(form_data)
 
 	# Declare dictionaries
 	params={}
