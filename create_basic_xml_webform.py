@@ -15,7 +15,7 @@ from create_xml_funcs import *
 
 proj_dir='/storage/www/cpdnboinc_dev/'
 
-def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist):
+def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist):
 	print "Creating experiments... "
 	ic_ancil={}
 	# Start the xml document
@@ -53,7 +53,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
 		for ia in range(0,n_analysis):
                         ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(2)+'.zip'                  
                         params['analysis_member_number']=str(ia).zfill(2)
-			for iens in range(1,n_ens+1):  
+			for iens in range(s_ens,n_ens+1):  
                                 params['ensemble_member_number']=str(iens).zfill(2)
 				params['unique_member_id']=anc.Get()
 
@@ -109,8 +109,9 @@ def main():
 	# Define number of analysis numbers
 	n_analysis=int(form_data['n_analysis'])
 
-	# Define number of ensemble members
+	# Define number of ensemble members and starting ensemble member number
 	n_ens=int(form_data['n_ens'])
+	s_ens=int(form_data['s_ens'])
 
 	# Set up doc
         upload_loc=form_data['upload_loc']
@@ -144,7 +145,7 @@ def main():
         batch['tech_info']=form_data['BatchTechInfo']
         batch['proj']=form_data['BatchProj']
 
-	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist)
+	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist)
 
 	print 'Done!'
 

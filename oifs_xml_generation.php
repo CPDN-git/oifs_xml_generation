@@ -89,6 +89,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
 	<tr class="nohover"><td>Starting UMID:</td><td><input type="text" name="start_umid" value="a000"></td></tr>
 	<tr class="nohover"><td>Number of analyses (per start date):</td><td><input type="text" name="n_analysis"></td></tr>
 	<tr class="nohover"><td>Number of ensemble members (per analysis):</td><td><input type="text" name="n_ens"></td></tr>
+	<tr class="nohover"><td>Starting ensemble member number:</td><td><input type="text" name="s_ens" value="1"></td></tr>
 	<tr class="nohover"><td>Upload Location:</td><td><select id="upload_loc" name="upload_loc" class="dropdown">
                 <option value="0">Select...</option>
                 <option value="alpha">Alpha</option>
