@@ -53,7 +53,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
 		for ia in range(0,n_analysis):
                         ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(2)+'.zip'                  
                         params['analysis_member_number']=str(ia).zfill(2)
-			for iens in range(s_ens,n_ens+1):  
+			for iens in range(s_ens,s_ens+n_ens):  
                                 params['ensemble_member_number']=str(iens).zfill(2)
 				params['unique_member_id']=anc.Get()
 
