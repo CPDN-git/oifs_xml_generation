@@ -64,12 +64,15 @@ $script_path='/storage/www/cpdnboinc_dev/oifs_xml_generation/';
 if (in_array($user->email_addr,$allowed_uploaders)){
         echo "$user->name is logged in<br>";
         echo 'Form was submitted, here are the form values: <pre>';
-        print_r($_POST);
+	foreach ($_POST as $key => $value){
+		$_POST[$key] = htmlspecialchars($value,ENT_QUOTES, "UTF-8");
+        }
+	print_r($_POST);
         echo "</pre>";
 	$arr= json_encode($_POST);
 	$escaped_arr=escapeshellarg($arr);
 	$r = escapeshellcmd( $python_env.' '.$script_path.'create_basic_xml_webform.py '.$escaped_arr);
-	$output = shell_exec($r);
+	$output = shell_exec($r.' 2>&1');
 	echo "<pre>$output</pre>";
 }
 else {

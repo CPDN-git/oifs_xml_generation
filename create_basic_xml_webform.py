@@ -95,7 +95,7 @@ def main():
 	
 	fdata=data.replace('\\','') 
 	form_data=literal_eval(fdata)
-
+	
 	# Declare dictionaries
 	params={}
 	ifs_data={}
@@ -144,7 +144,7 @@ def main():
         batch['owner']=owner2
         batch['tech_info']=form_data['BatchTechInfo']
         batch['proj']=form_data['BatchProj']
-
+	
 	create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist)
 
 	print 'Done!'
