@@ -19,6 +19,7 @@
 require_once("../inc/util.inc");
 require_once("../inc/user.inc");
 require_once("../inc/oifs_uploaders.inc");
+require_once("../inc/batch_site_config.inc");
 
 //page_head("OpenIFS Ancil upload form");
 
@@ -78,7 +79,18 @@ if (in_array($user->email_addr,$allowed_uploaders)){
 	<h3>Model Configuration Details</h3>
 	<table width="100%" border="0" style="border:none;">
 	<tr class="nohover"><td width=22%>Model Class:</td><td width=78%><input type="text" name="model_class" value="openifs"></td></tr>
-	<tr class="nohover"><td>Model Configuration File:</td><td><input type="text" name="model_config" value="40r1_T159.xml"></td></tr>
+	<tr class="nohover"><td>Model Configuration File:</td><td><select id="model_config" name="model_config" class="dropdown">
+	<?php 
+	$files = array_slice(scandir($base_path.'/oifs_workgen/config_dir'), 2);	
+	foreach ($files as $file) {
+	if ($file=="40r1_T159.xml"){
+	echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+	} else {
+    	echo "<option value=\"" .$file."\">" . $file. "</option>";
+	}
+	}
+	?>
+	</select></td></tr>
 	</table>
 	</div>
 
@@ -118,23 +130,73 @@ if (in_array($user->email_addr,$allowed_uploaders)){
                 <option value="days">Days</option>
                 <option value="hours">Hours</option>
                 </select></td></tr>
-        <tr class="nohover"><td>FullPos Namelist File:</td><td><input type="text" name="fullpos_namelist"></td></tr>
+        <tr class="nohover"><td>FullPos Namelist File:</td><td><select id="fullpos_namelist" name="fullpos_namelist" class="dropdown" style="width: 25%;">
+        <option value="0">Select</option>
+        <?php
+        $files = array_slice(scandir($base_path.'/oifs_ancil_files/fullpos_namelist'), 2);
+        foreach ($files as $file)
+        {
+        echo "<option value=\"" .$file."\">" . $file . "</option>";
+        }
+        ?>
+        </select></td></tr>
 	</table>
         </div>
 
 	<div id="ifsdata" name="ifsdata">
 	<h3>IFS data</h3>
 	<table width="100%" border="0" style="border:none;">
-        <tr class="nohover"><td Width=22%>SO4 File:</td><td width=78%><input type="text" name="SO4_file" value="SO4.zip"></td></tr>
-        <tr class="nohover"><td>Radiation File:</td><td width=78%><input type="text" name="Rad_file" value="radiation.zip"></td></tr>
-        <tr class="nohover"><td>CFC File:</td><td width=78%><input type="text" name="CFC_file" value="CFC.zip"></td></tr>
+        <tr class="nohover"><td Width=22%>SO4 File:</td><td width=78%><select id="SO4_file" name="SO4_file" class="dropdown" style="width: 25%;">
+        <?php
+        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/SO4_files'), 2);
+        foreach ($files as $file) {
+        if ($file=="SO4.zip"){
+        echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+        } else {
+        echo "<option value=\"" .$file."\">" . $file. "</option>";
+        }
+        }
+        ?>
+        </select></td></tr>
+        <tr class="nohover"><td>Radiation File:</td><td width=78%><select id="Rad_file" name="Rad_file" class="dropdown" style="width: 25%;">
+        <?php
+        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/radiation_files'), 2);
+        foreach ($files as $file) {
+        if ($file=="radiation.zip"){
+        echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+        } else {
+        echo "<option value=\"" .$file."\">" . $file. "</option>";
+        }
+        }
+        ?>
+        <tr class="nohover"><td>CFC File:</td><td width=78%><select id="CFC_file" name="CFC_file" class="dropdown" style="width: 25%;">
+        <?php
+        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/CFC_files'), 2);
+        foreach ($files as $file) {
+        if ($file=="CFC.zip"){
+        echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+        } else {
+        echo "<option value=\"" .$file."\">" . $file. "</option>";
+        }
+        }
+        ?>
 	</table>
         </div>
 
 	<div id="climate_data" name="climate_data">
         <h3>Climate Data</h3>
         <table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td Width=22%>Climate Data File:</td><td width=78%><input type="text" name="climate_data_file" value="climate_data.zip"></td></tr>
+	<tr class="nohover"><td Width=22%>Climate Data File:</td><td width=78%><select id="climate_data_file" name="climate_data_file" class="dropdown" style="width: 25%;">
+        <?php
+        $files = array_slice(scandir($base_path.'/oifs_ancil_files/climate_data'), 2);
+        foreach ($files as $file) {
+        if ($file=="climate_data.zip"){
+        echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+        } else {
+        echo "<option value=\"" .$file."\">" . $file. "</option>";
+        }
+        }
+        ?>
         </table>
 	</div>
 	<br>
