@@ -48,10 +48,10 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,upload_
                 params['start_hour']=date[-2:]
 
                 for ia in range(0,n_analysis):
-                        ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(2)+'.zip'                  
-                        params['analysis_member_number']=str(ia).zfill(2)
+                        ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(3)+'.zip'                  
+                        params['analysis_member_number']=str(ia).zfill(3)
 			for iens in range(1,n_ens+1):  
-                                params['ensemble_member_number']=str(iens).zfill(2)
+                                params['ensemble_member_number']=str(iens).zfill(3)
 				params['unique_member_id']=anc.Get()
 
                                 wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data)
