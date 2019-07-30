@@ -133,7 +133,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <tr class="nohover"><td>FullPos Namelist File:</td><td><select id="fullpos_namelist" name="fullpos_namelist" class="dropdown" style="width: 25%;">
         <option value="0">Select</option>
         <?php
-        $files = array_slice(scandir($base_path.'/oifs_ancil_files/fullpos_namelist'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/fullpos_namelist'), 2);
         foreach ($files as $file)
         {
         echo "<option value=\"" .$file."\">" . $file . "</option>";
@@ -148,7 +148,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
 	<table width="100%" border="0" style="border:none;">
         <tr class="nohover"><td Width=22%>SO4 File:</td><td width=78%><select id="SO4_file" name="SO4_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/SO4_files'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/SO4_files'), 2);
         foreach ($files as $file) {
         if ($file=="SO4.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
@@ -160,7 +160,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         </select></td></tr>
         <tr class="nohover"><td>Radiation File:</td><td width=78%><select id="Rad_file" name="Rad_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/radiation_files'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/radiation_files'), 2);
         foreach ($files as $file) {
         if ($file=="radiation.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
@@ -171,7 +171,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         ?>
         <tr class="nohover"><td>CFC File:</td><td width=78%><select id="CFC_file" name="CFC_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($base_path.'/oifs_ancil_files/ifsdata/CFC_files'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/CFC_files'), 2);
         foreach ($files as $file) {
         if ($file=="CFC.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
@@ -188,7 +188,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <table width="100%" border="0" style="border:none;">
 	<tr class="nohover"><td Width=22%>Climate Data File:</td><td width=78%><select id="climate_data_file" name="climate_data_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($base_path.'/oifs_ancil_files/climate_data'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/climate_data'), 2);
         foreach ($files as $file) {
         if ($file=="climate_data.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
