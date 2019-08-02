@@ -20,7 +20,7 @@ require_once("../inc/util.inc");
 require_once("../inc/user.inc");
 require_once("../inc/boinc_db.inc");
 require_once("../inc/oifs_uploaders.inc");
-
+require_once("../inc/batch_site_config.inc");
 
 //page_head("OpenIFS Ensemble Creation");
 
@@ -58,9 +58,6 @@ echo '<hr>';
 
 $user = get_logged_in_user();
 
-$python_env='/home/boinc/miniconda2/envs/oifs_pyenv/bin/python';
-$script_path='/storage/www/cpdnboinc_dev/oifs_xml_generation/';
-
 if (in_array($user->email_addr,$allowed_uploaders)){
         echo "$user->name is logged in<br>";
         echo 'Form was submitted, here are the form values: <pre>';
@@ -71,7 +68,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         echo "</pre>";
 	$arr= json_encode($_POST);
 	$escaped_arr=escapeshellarg($arr);
-	$r = escapeshellcmd( $python_env.' '.$script_path.'create_basic_xml_webform.py '.$escaped_arr);
+	$r = escapeshellcmd( $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr);
 	$output = shell_exec($r.' 2>&1');
 	echo "<pre>$output</pre>";
 }

@@ -13,7 +13,14 @@ from ast import literal_eval
 
 from create_xml_funcs import *
 
-proj_dir='/storage/www/cpdnboinc_dev/'
+from socket import gethostname
+
+
+host=gethostname()
+if host=='caerus' or host =='hesperus':
+	proj_dir='/storage/www/cpdnboinc/'
+elif host=='pandia':
+	proj_dir='/storage/www/cpdnboinc_dev/'
 
 def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist):
 	print "Creating experiments... "
