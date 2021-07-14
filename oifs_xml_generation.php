@@ -158,22 +158,22 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         }
         ?>
         </select></td></tr>
-        <tr class="nohover"><td>Radiation File:</td><td width=78%><select id="Rad_file" name="Rad_file" class="dropdown" style="width: 25%;">
+        <tr class="nohover"><td>Other radiation File:</td><td width=78%><select id="Rad_file" name="Rad_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/radiation_files'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/other_radiation_files'), 2);
         foreach ($files as $file) {
-        if ($file=="radiation.zip"){
+        if ($file=="other_radiation.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";
         }
         }
         ?>
-        <tr class="nohover"><td>CFC File:</td><td width=78%><select id="CFC_file" name="CFC_file" class="dropdown" style="width: 25%;">
+        <tr class="nohover"><td>GHG File:</td><td width=78%><select id="GHG_file" name="GHG_file" class="dropdown" style="width: 25%;">
         <?php
-        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/CFC_files'), 2);
+        $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/GHG_files'), 2);
         foreach ($files as $file) {
-        if ($file=="CFC.zip"){
+        if ($file=="GHG.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";

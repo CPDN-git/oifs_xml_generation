@@ -123,8 +123,8 @@ def main():
 
 	# Climate data and ifs data
 	ifs_data['SO4_zip']='SO4.zip'
-	ifs_data['radiation_zip']='radiation.zip'
-	ifs_data['CFC_zip']='CFC.zip'
+	ifs_data['other_radiation_zip']='other_radiation.zip'
+	ifs_data['GHG_zip']='GHG.zip'
 	climate_data['climate_data_zip']='climate_data.zip'
 
 	# Add in batch tags:
