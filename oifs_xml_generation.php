@@ -67,10 +67,10 @@ if (in_array($user->email_addr,$allowed_uploaders)){
 	<div id="BatchInfo" name="BatchInfo">
         <h3>Batch Information</h3>
 	<table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td Width=22%>Batch Project:</td><td width=78%><input type="text" name="BatchProj" value="OpenIFS@HOME"></td></tr>
+	<tr class="nohover"><td Width=22%>Batch Project:</td><td width=78%><input type="text" name="BatchProj" value="OpenIFSATHOME"></td></tr>
 	<tr class="nohover"><td>Batch Name:</td><td><textarea id="BatchName" name="BatchName" rows="1" cols="80"></textarea></td></tr>
 	<tr class="nohover"><td>Batch Description:</td><td><textarea id="BatchDesc" name="BatchDesc" rows="3" cols="80"></textarea></td></tr>
-	<tr class="nohover"><td>Batch Owner(s) as Name (e-mail):</td><td><textarea id="BatchOwner" name="BatchOwner" rows="1" cols="80"></textarea></td></tr>
+	<tr class="nohover"><td>Batch Owner(s). Enter as Name (e-mail):</td><td><textarea id="BatchOwner" name="BatchOwner" rows="1" cols="80"></textarea></td></tr>
 	<tr class="nohover"><td>Batch Technical Information:</td><td><textarea id="BatchTechInfo" name="BatchTechInfo" rows="3" cols="80"></textarea></td></tr>
 	</table>
 	</div>
