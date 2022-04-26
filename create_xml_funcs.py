@@ -6,6 +6,7 @@
 
 from xml.etree.ElementTree import *
 from ANC import *
+from xml.dom import minidom
 
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
@@ -76,3 +77,106 @@ def AddBatchInfo(batch):
 	SubElement(binf, 'workunit_range').text="workunit_range"
 	SubElement(binf, 'batchid').text="batchid"
 	return binf
+
+def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
+    # Set some paths to find the config file and 
+    project_dir = '/storage/www/cpdnboinc_dev/'
+    ifs_ancil_dir = '/storage/cpdn_ancil_files/oifs_ancil_files/'
+
+    date=dates[0]
+    params['start_year']=date[0:4]
+    params['start_month']=date[4:6]
+    params['start_day']=date[6:8]
+    params['start_hour']=date[-2:]
+
+    params['analysis_member_number']=str(0).zfill(3)
+    params['ensemble_member_number']=str(s_ens).zfill(3)
+
+
+    # Read information from the configuration file
+    xmldoc2 = minidom.parse(project_dir+'oifs_workgen/config_dir/'+model_config)
+    
+    model_configs = xmldoc2.getElementsByTagName('model_config')
+    for model_config in model_configs:
+        horiz_resolution = str(model_config.getElementsByTagName('horiz_resolution')[0].childNodes[0].nodeValue)
+        vert_resolution = str(model_config.getElementsByTagName('vert_resolution')[0].childNodes[0].nodeValue)
+        grid_type = str(model_config.getElementsByTagName('grid_type')[0].childNodes[0].nodeValue)
+        timestep = str(model_config.getElementsByTagName('timestep')[0].childNodes[0].nodeValue)
+        timestep_units = str(model_config.getElementsByTagName('timestep_units')[0].childNodes[0].nodeValue)
+        upload_frequency = str(model_config.getElementsByTagName('upload_frequency')[0].childNodes[0].nodeValue)
+        namelist_template = str(model_config.getElementsByTagName('namelist_template_global')[0].childNodes[0].nodeValue)
+        wam_namelist_template = str(model_config.getElementsByTagName('wam_template_global')[0].childNodes[0].nodeValue)
+
+    # Calculate the number of timesteps from the number of days of the simulation
+    if params['fclen_units'] == 'days':
+        sfac=86400
+        hfac=24
+    elif params['fclen_units'] == 'hours':
+        sfac=3600
+        hfac=1
+    
+    num_timesteps = (int(params['fclen']) * sfac)/int(timestep)
+    num_hours=int(params['fclen']) * hfac
+    num_days=num_hours/24.
+    # Throw an error if not cleanly divisible
+    if not(isinstance(num_timesteps,int)):
+        raise ValueError('Length of simulation does not divide equally by timestep')
+
+    # Set upload interval and number of uploads, upload_interval is the number of timesteps between uploads
+    if upload_frequency == 'daily':
+        upload_interval = num_timesteps / num_days
+    elif upload_frequency == 'weekly':
+        upload_interval = (num_timesteps / num_days) * 7
+    elif upload_frequency == 'monthly':
+        upload_interval = (num_timesteps / num_days) * 30
+    elif upload_frequency == 'yearly':
+        upload_interval = (num_timesteps / num_days) * 365
+
+    # Throw an error if not cleanly divisible
+    if not(upload_interval.is_integer()):
+        raise ValueError('The number of time steps does not divide equally by the upload frequency')
+    
+    number_of_uploads = int(num_timesteps/upload_interval)
+    #number_of_uploads = int(math.ceil(float(num_timesteps) / float(upload_interval)))
+    print("")
+    print("Upload Interval (number of timesteps between uploads): "+str(int(upload_interval)))
+    print("Number of uploads: "+str(number_of_uploads))
+
+
+    # Read in the namelist template file
+    with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :
+        template_file = ''
+        for line in namelist_file:
+            # Replace the values
+            line = line.replace('_EXPTID',params['exptid'])
+            # Set the UMID as t000 to represent a test configuration
+            line = line.replace('_UNIQUE_MEMBER_ID',start_umid)
+            #  Do not replace these names as in the submiissioon script since they will be workunit dependent
+            #line = line.replace('_IC_ANCIL_FILE',"ic_ancil_"+str(wuid))
+            #line = line.replace('_IFSDATA_FILE',"ifsdata_"+str(wuid))
+            #line = line.replace('_CLIMATE_DATA_FILE',"clim_data_"+str(wuid))
+            line = line.replace('_HORIZ_RESOLUTION',horiz_resolution)
+            line = line.replace('_VERT_RESOLUTION',vert_resolution)
+            line = line.replace('_GRID_TYPE',grid_type)
+            line = line.replace('_NUM_TIMESTEPS',str(num_timesteps))
+            line = line.replace('_TIMESTEP',timestep)
+            line = line.replace('_UPLOAD_INTERVAL',str(int(upload_interval)))
+            line = line.replace('_ENSEMBLE_MEMBER_NUMBER',params['ensemble_member_number'])
+            line = line.replace('_NUM_HOURS',str(num_hours))
+            # Remove commented lines
+            if not line.startswith('!!'):
+                template_file=template_file+line
+
+    # Read in the fullpos_namelist
+    with open(ifs_ancil_dir+'fullpos_namelist/'+fullpos_namelist) as namelist_file_2:
+        fullpos_file=''
+        for line in namelist_file_2:
+            if not line.startswith('!!'):
+                fullpos_file=fullpos_file+line
+
+    # Write out the workunit file, this is a combination of the fullpos and main namelists
+    print("")
+    print("fort.4 file for testing:")
+    print("")
+    print(fullpos_file)
+    print(template_file)
