@@ -22,7 +22,7 @@ if host=='caerus' or host =='hesperus':
 elif host=='pandia':
 	proj_dir='/storage/www/cpdnboinc_dev/'
 
-def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist):
+def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist,num_threads):
     print "Creating experiments... "
     ic_ancil={}
     # Start the xml document
@@ -33,6 +33,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     SubElement(outtreeroot, 'model_class').text=str(model_class)
     SubElement(outtreeroot, 'model_config').text=str(model_config)
     SubElement(outtreeroot, 'fullpos_namelist').text=str(fullpos_namelist)
+    SubElement(outtreeroot, 'num_threads').text=str(num_threads)
 
     # Add in the upload information
     upload_handler,upload_template=get_upload_info(upload_loc)
@@ -151,7 +152,9 @@ def main():
     batch['tech_info']=form_data['BatchTechInfo']
     batch['proj']=form_data['BatchProj']
     
-    create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist)
+    num_threads=1
+
+    create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist,num_threads)
     CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist)
 
     print 'Done!'
