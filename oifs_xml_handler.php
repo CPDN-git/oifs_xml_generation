@@ -16,11 +16,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once("../inc/util.inc");
-require_once("../inc/user.inc");
-require_once("../inc/boinc_db.inc");
-require_once("../inc/oifs_uploaders.inc");
-require_once("../inc/batch_site_config.inc");
+//require_once("../inc/util.inc");
+//require_once("../inc/user.inc");
+//require_once("../inc/boinc_db.inc");
+//require_once("../inc/oifs_uploaders.inc");
+//require_once("../inc/batch_site_config.inc");
 
 //page_head("OpenIFS Ensemble Creation");
 
@@ -56,9 +56,9 @@ echo '<div style="clear: both;"></div>';
 echo '</div>';
 echo '<hr>';
 
-$user = get_logged_in_user();
+//$user = get_logged_in_user();
 
-if (in_array($user->email_addr,$allowed_uploaders)){
+if (1){//in_array($user->email_addr,$allowed_uploaders)){
         echo "$user->name is logged in<br>";
         echo 'Form was submitted, here are the form values: <pre>';
 	foreach ($_POST as $key => $value){

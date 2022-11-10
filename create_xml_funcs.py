@@ -8,6 +8,43 @@ from xml.etree.ElementTree import *
 from ANC import *
 from xml.dom import minidom
 
+# Sampling imports
+import openturns as ot
+
+def CreateSampling(params):
+
+    try:
+        len(params['perpara']) == len(params['perboun'])
+    except:
+        raise Exception("Sensitivity: the number of parameters and boundaries are inconsistent.")
+
+    list_distrib = []
+    for bounds in params['perboun']:
+        if bounds[:1] == "I":
+            boundaries = bounds[1:].split(";")
+            number_integer = 1 + int(boundaries[1]) - int(boundaries[0])
+            samples = []
+            prob = []
+            for i in range(int(boundaries[0]), 1 + int(boundaries[1])):
+                samples.append([float(i)])
+                prob.append(1/number_integer)
+            sample = ot.Sample(samples)
+            points = ot.Point(prob)
+            list_distrib.append(ot.UserDefined(sample,points))
+        elif bounds[:1] == "F":
+            boundaries = bounds[1:].split(";")
+            list_distrib.append(ot.Uniform(float(boundaries[0]), float(boundaries[1])))
+        else:
+            raise Exception("Wrong type identifier in boundaries: only I and F are accepted")
+
+    nb_sample = params['persamp']
+    distribution = ot.ComposedDistribution(list_distrib)
+    distribution.setDescription(params['perpara'])
+    experiment = ot.LHSExperiment(distribution, nb_sample)
+    out_table = experiment.generate()
+
+    return out_table
+
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
         upload_info_dict={"alpha":("alpha","http://alpha.cpdn.org/cgi-bin/file_upload_handler"),\
@@ -78,7 +115,7 @@ def AddBatchInfo(batch):
 	SubElement(binf, 'batchid').text="batchid"
 	return binf
 
-def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
+def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist,variable_vectors):
     # Set some paths to find the config file and 
     project_dir = '/storage/www/cpdnboinc_dev/'
     ifs_ancil_dir = '/storage/cpdn_ancil_files/oifs_ancil_files/'
