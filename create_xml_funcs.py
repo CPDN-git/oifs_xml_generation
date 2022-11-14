@@ -69,15 +69,14 @@ def get_upload_info(upload_loc):
 def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
     # Set experiment and parameters tags and add to document
     Workunit=Element('workunit')
-    WU_tree=ElementTree(Workunit)	
-
+    WU_tree=ElementTree(Workunit)
     # Loop over parameters and add
     for param,value in sorted(params.iteritems()):
         SubElement(Workunit, param).text=str(value)
-	    # Add initial data file
-        ica=Element('ic_ancil')
-        ica_tree=ElementTree(ica)
-
+	
+    # Add initial data file
+    ica=Element('ic_ancil')
+    ica_tree=ElementTree(ica)
     for param,value in sorted(ic_ancil.iteritems()):
         SubElement(ica, param).text=str(value)	
 	
