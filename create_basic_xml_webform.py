@@ -62,9 +62,15 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
         for ia in range(0,n_analysis):
             ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(3)+'.zip'                  
             params['analysis_member_number']=str(ia).zfill(3)
-            for iens in range(s_ens,s_ens+n_ens):  
+            variables_name = variable_vectors.getDescription()
+            for iens in range(s_ens,s_ens+n_ens):
                 params['ensemble_member_number']=str(iens).zfill(3)
                 params['unique_member_id']=anc.Get()
+
+                # Sensitivity experiment:
+                variable_vector = variable_vectors[iens]
+                for ele in range(len(variables_name)):
+                    params[str(variables_name[ele])] = variable_vector[ele]
 
                 wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data)
                 WUs.append(wu)
@@ -138,15 +144,15 @@ def main():
     params['fclen_units']=form_data['fclen_units']
 
     # Sensitivity experiment
-    params['perpara']=form_data['perpara'].split('/')
-    params['perboun']=form_data['perboun'].split('/')
+    para_per = form_data['perpara'].split('/')
+    para_bou =form_data['perboun'].split('/')
 
     # Climate data and ifs data
     ifs_data['SO4_zip']=form_data['SO4_file']
     ifs_data['other_radiation_zip']=form_data['Rad_file']
     ifs_data['GHG_zip']=form_data['GHG_file']
     climate_data['climate_data_zip']=form_data['climate_data_file']
-    
+
     # Add in batch tags:
     batch['name']=form_data['BatchName']
     batch['desc']=form_data['BatchDesc']
@@ -159,10 +165,10 @@ def main():
     
     num_threads=1
 
-    variable_vectors = CreateSampling(params)
+    variable_vectors = CreateSampling(para_per,para_bou,n_ens)
     create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid,
                model_class,model_config,fullpos_namelist,num_threads,variable_vectors)
-    CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist,variable_vectors)
+    CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist)
 
     print('Done!')
 

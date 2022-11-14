@@ -16,12 +16,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-//require_once("../inc/util.inc");
-//require_once("../inc/user.inc");
-//require_once("../inc/oifs_uploaders.inc");
-//require_once("../inc/batch_site_config.inc");
+require_once("../inc/util.inc");
+require_once("../inc/user.inc");
+require_once("../inc/oifs_uploaders.inc");
+require_once("../inc/batch_site_config.inc");
 
-//page_head("OpenIFS Ancil upload form");
+page_head("OpenIFS Ancil upload form");
 
 echo <<<EOH
 <html>
@@ -57,9 +57,9 @@ echo '</div>';
 echo '<hr>';
 echo '<h2>To generate a submission xml enter the following information about your experiment file(s).</h2>';
 
-//$user = get_logged_in_user();
-if (1){//in_array($user->email_addr,$allowed_uploaders)){
-	//echo "<p>$user->name is logged in</p>";
+$user = get_logged_in_user();
+if (in_array($user->email_addr,$allowed_uploaders)){
+	echo "<p>$user->name is logged in</p>";
 	?>
 	<p><b>Use comma separated lists to enter mutliple values of fields (e.g. start date and batch owner) if required.</b></p>
 	<form id="oifs_xml_form" name="oifs_xml_form"  action="oifs_xml_handler.php" method="post" enctype="multipart/form-data">
@@ -203,7 +203,6 @@ if (1){//in_array($user->email_addr,$allowed_uploaders)){
         <div id="sensitivity_exp" name="sensitivity_exp">
         <h3>Sensitivity Experiment</h3>
         <table width="100%" border="0" style="border:none;">
-        <tr class="nohover"><td Width=22%>Number samples:</td><td width=78%><input type="text" name="persamp">
 	<tr class="nohover"><td Width=22%>Perturbed parameters:</td><td width=78%><input type="text" name="perpara">
         <tr class="nohover"><td Width=22%>Corresponding Boundaries:</td><td width=78%><input type="text" name="perboun">
         </table>

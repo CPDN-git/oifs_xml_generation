@@ -11,15 +11,15 @@ from xml.dom import minidom
 # Sampling imports
 import openturns as ot
 
-def CreateSampling(params):
+def CreateSampling(para_per,para_bou,n_ens):
 
     try:
-        len(params['perpara']) == len(params['perboun'])
+        len(para_per) == len(para_bou)
     except:
         raise Exception("Sensitivity: the number of parameters and boundaries are inconsistent.")
 
     list_distrib = []
-    for bounds in params['perboun']:
+    for bounds in para_bou:
         if bounds[:1] == "I":
             boundaries = bounds[1:].split(";")
             number_integer = 1 + int(boundaries[1]) - int(boundaries[0])
@@ -37,10 +37,9 @@ def CreateSampling(params):
         else:
             raise Exception("Wrong type identifier in boundaries: only I and F are accepted")
 
-    nb_sample = params['persamp']
     distribution = ot.ComposedDistribution(list_distrib)
-    distribution.setDescription(params['perpara'])
-    experiment = ot.LHSExperiment(distribution, nb_sample)
+    distribution.setDescription(para_per)
+    experiment = ot.LHSExperiment(distribution, n_ens)
     out_table = experiment.generate()
 
     return out_table
@@ -68,54 +67,50 @@ def get_upload_info(upload_loc):
 
 # Take dictionary of parameters and add experiment to the xml
 def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
-	# Set experiment and parameters tags and add to document
-	Workunit=Element('workunit')
-        WU_tree=ElementTree(Workunit)	
+    # Set experiment and parameters tags and add to document
+    Workunit=Element('workunit')
+    WU_tree=ElementTree(Workunit)	
 
-	# Loop over parameters and add
-	for param,value in sorted(params.iteritems()):
-		SubElement(Workunit, param).text=str(value)
-
-	
-	# Add initial data file
+    # Loop over parameters and add
+    for param,value in sorted(params.iteritems()):
+        SubElement(Workunit, param).text=str(value)
+	    # Add initial data file
         ica=Element('ic_ancil')
         ica_tree=ElementTree(ica)
-	for param,value in sorted(ic_ancil.iteritems()):
-                SubElement(ica, param).text=str(value)	
+
+    for param,value in sorted(ic_ancil.iteritems()):
+        SubElement(ica, param).text=str(value)	
 	
 	# Add ifs_data files
-	ifsd=Element('ifsdata')
-        ifsd_tree=ElementTree(ifsd)
-	for param,value in sorted(ifs_data.iteritems()):
-        	SubElement(ifsd, param).text=str(value)
-
-	# Add climate_data files
+    ifsd=Element('ifsdata')
+    ifsd_tree=ElementTree(ifsd)
+    for param,value in sorted(ifs_data.iteritems()):
+        SubElement(ifsd, param).text=str(value)
+        # Add climate_data files
         clid=Element('climate_data')
         clid_tree=ElementTree(clid)
         for param,value in sorted(climate_data.iteritems()):
-                SubElement(clid, param).text=str(value)
+            SubElement(clid, param).text=str(value)
 
-	Workunit.append(ica)
-	Workunit.append(ifsd)
-	Workunit.append(clid)
-	return Workunit
- 
-	
+    Workunit.append(ica)
+    Workunit.append(ifsd)
+    Workunit.append(clid)
+    return Workunit
 
 
 # Adds batch tags to xml file
 def AddBatchInfo(batch):
 	# Add batch information files
-        binf=Element('batch_info')
-        binf_tree=ElementTree(binf)
-        for param,value in sorted(batch.iteritems()):
-                SubElement(binf, param).text=str(value)
+    binf=Element('batch_info')
+    binf_tree=ElementTree(binf)
+    for param,value in sorted(batch.iteritems()):
+        SubElement(binf, param).text=str(value)
 
-	SubElement(binf, 'workunit_range').text="workunit_range"
-	SubElement(binf, 'batchid').text="batchid"
-	return binf
+    SubElement(binf, 'workunit_range').text="workunit_range"
+    SubElement(binf, 'batchid').text="batchid"
+    return binf
 
-def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist,variable_vectors):
+def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Set some paths to find the config file and 
     project_dir = '/storage/www/cpdnboinc_dev/'
     ifs_ancil_dir = '/storage/cpdn_ancil_files/oifs_ancil_files/'

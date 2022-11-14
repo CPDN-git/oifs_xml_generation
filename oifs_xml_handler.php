@@ -16,13 +16,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with BOINC.  If not, see <http://www.gnu.org/licenses/>.
 
-//require_once("../inc/util.inc");
-//require_once("../inc/user.inc");
-//require_once("../inc/boinc_db.inc");
-//require_once("../inc/oifs_uploaders.inc");
-//require_once("../inc/batch_site_config.inc");
+require_once("../inc/util.inc");
+require_once("../inc/user.inc");
+require_once("../inc/boinc_db.inc");
+require_once("../inc/oifs_uploaders.inc");
+require_once("../inc/batch_site_config.inc");
 
-//page_head("OpenIFS Ensemble Creation");
+page_head("OpenIFS Ensemble Creation");
 
 echo <<<EOH
 <html>
@@ -56,9 +56,9 @@ echo '<div style="clear: both;"></div>';
 echo '</div>';
 echo '<hr>';
 
-//$user = get_logged_in_user();
+$user = get_logged_in_user();
 
-if (1){//in_array($user->email_addr,$allowed_uploaders)){
+if (in_array($user->email_addr,$allowed_uploaders)){
         echo "$user->name is logged in<br>";
         echo 'Form was submitted, here are the form values: <pre>';
 	foreach ($_POST as $key => $value){
@@ -68,8 +68,9 @@ if (1){//in_array($user->email_addr,$allowed_uploaders)){
         echo "</pre>";
 	$arr= json_encode($_POST);
 	$escaped_arr=escapeshellarg($arr);
-	$r = escapeshellcmd( $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr);
-	$output = shell_exec($r.' 2>&1');
+        echo $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr;
+	$r = escapeshellcmd( $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr); 
+        $output = shell_exec($r.' 2>&1');
 	echo "<pre>$output</pre>";
 }
 else {
