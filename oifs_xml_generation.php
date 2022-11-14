@@ -21,7 +21,7 @@ require_once("../inc/user.inc");
 require_once("../inc/oifs_uploaders.inc");
 require_once("../inc/batch_site_config.inc");
 
-page_head("OpenIFS Ancil upload form");
+//page_head("OpenIFS Ancil upload form");
 
 echo <<<EOH
 <html>

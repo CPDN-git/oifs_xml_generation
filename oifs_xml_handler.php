@@ -22,7 +22,7 @@ require_once("../inc/boinc_db.inc");
 require_once("../inc/oifs_uploaders.inc");
 require_once("../inc/batch_site_config.inc");
 
-page_head("OpenIFS Ensemble Creation");
+//page_head("OpenIFS Ensemble Creation");
 
 echo <<<EOH
 <html>
@@ -68,7 +68,6 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         echo "</pre>";
 	$arr= json_encode($_POST);
 	$escaped_arr=escapeshellarg($arr);
-        echo $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr;
 	$r = escapeshellcmd( $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr); 
         $output = shell_exec($r.' 2>&1');
 	echo "<pre>$output</pre>";
