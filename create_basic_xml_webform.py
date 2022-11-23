@@ -101,7 +101,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     with open(proj_dir+"/oifs_workgen/xml_staging/"+xml_out, "w") as f:
             f.write(xmlstr)
     # Print out the number of xmls
-    print("Number of workunits: "+count)
+    print("Number of workunits: "+str(count))
 
 
 def main():
