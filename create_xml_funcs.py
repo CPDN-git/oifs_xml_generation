@@ -71,24 +71,24 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
     Workunit=Element('workunit')
     WU_tree=ElementTree(Workunit)
     # Loop over parameters and add
-    for param,value in sorted(params.iteritems()):
+    for param,value in sorted(params.items()):
         SubElement(Workunit, param).text=str(value)
 	
     # Add initial data file
     ica=Element('ic_ancil')
     ica_tree=ElementTree(ica)
-    for param,value in sorted(ic_ancil.iteritems()):
+    for param,value in sorted(ic_ancil.items()):
         SubElement(ica, param).text=str(value)	
 	
 	# Add ifs_data files
     ifsd=Element('ifsdata')
     ifsd_tree=ElementTree(ifsd)
-    for param,value in sorted(ifs_data.iteritems()):
+    for param,value in sorted(ifs_data.items()):
         SubElement(ifsd, param).text=str(value)
         # Add climate_data files
         clid=Element('climate_data')
         clid_tree=ElementTree(clid)
-        for param,value in sorted(climate_data.iteritems()):
+        for param,value in sorted(climate_data.items()):
             SubElement(clid, param).text=str(value)
 
     Workunit.append(ica)
@@ -102,7 +102,7 @@ def AddBatchInfo(batch):
 	# Add batch information files
     binf=Element('batch_info')
     binf_tree=ElementTree(binf)
-    for param,value in sorted(batch.iteritems()):
+    for param,value in sorted(batch.items()):
         SubElement(binf, param).text=str(value)
 
     SubElement(binf, 'workunit_range').text="workunit_range"

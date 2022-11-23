@@ -107,7 +107,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
 def main():
     data=sys.argv[1]
     
-    fdata=data.replace('\\','') 
+    fdata=data.replace('\\','')
     form_data=literal_eval(fdata)
     
     # Declare dictionaries
