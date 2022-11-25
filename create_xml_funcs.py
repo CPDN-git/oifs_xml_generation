@@ -13,13 +13,16 @@ import openturns as ot
 
 def CreateSampling(para_per,para_bou,n_ens):
 
+    # Verify the size of the name and boundary of perturbed parameters:
     try:
         len(para_per) == len(para_bou)
     except:
         raise Exception("Sensitivity: the number of parameters and boundaries are inconsistent.")
 
+    # Create the PDF:
     list_distrib = []
     for bounds in para_bou:
+        # Create Dirac PDF for Integer:
         if bounds[:1] == "I":
             boundaries = bounds[1:].split(";")
             number_integer = 1 + int(boundaries[1]) - int(boundaries[0])
@@ -31,14 +34,17 @@ def CreateSampling(para_per,para_bou,n_ens):
             sample = ot.Sample(samples)
             points = ot.Point(prob)
             list_distrib.append(ot.UserDefined(sample,points))
+        # Create Uniform PDF for Float:
         elif bounds[:1] == "F":
             boundaries = bounds[1:].split(";")
             list_distrib.append(ot.Uniform(float(boundaries[0]), float(boundaries[1])))
         else:
             raise Exception("Wrong type identifier in boundaries: only I and F are accepted")
 
+    # Create the composite distribution:
     distribution = ot.ComposedDistribution(list_distrib)
     distribution.setDescription(para_per)
+    # Create the LHS sampling:
     experiment = ot.LHSExperiment(distribution, n_ens)
     out_table = experiment.generate()
 

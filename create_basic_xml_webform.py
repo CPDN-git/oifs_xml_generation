@@ -23,7 +23,7 @@ elif host=='pandia':
 	proj_dir='/storage/www/cpdnboinc_dev/'
 
 def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid,
-               model_class,model_config, fullpos_namelist,num_threads,variable_vectors):
+               model_class,model_config, fullpos_namelist,num_threads,sens_exp,variable_vectors):
     print("Creating experiments... ")
     ic_ancil={}
     # Start the xml document
@@ -62,15 +62,17 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
         for ia in range(0,n_analysis):
             ic_ancil['ic_ancil_zip']='ic_'+params['exptid']+'_'+date+'_'+str(ia).zfill(3)+'.zip'                  
             params['analysis_member_number']=str(ia).zfill(3)
-            variables_name = variable_vectors.getDescription()
+            if sens_exp:
+                variables_name = variable_vectors.getDescription()
             for iens in range(s_ens,s_ens+n_ens):
                 params['ensemble_member_number']=str(iens).zfill(3)
                 params['unique_member_id']=anc.Get()
 
                 # Sensitivity experiment:
-                variable_vector = variable_vectors[iens]
-                for ele in range(len(variables_name)):
-                    params[str(variables_name[ele])] = variable_vector[ele]
+                if sens_exp:
+                    variable_vector = variable_vectors[iens]
+                    for ele in range(len(variables_name)):
+                        params['parameters'][str(variables_name[ele])] = variable_vector[ele]
 
                 wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data)
                 WUs.append(wu)
@@ -144,8 +146,12 @@ def main():
     params['fclen_units']=form_data['fclen_units']
 
     # Sensitivity experiment
-    para_per = form_data['perpara'].split('/')
-    para_bou =form_data['perboun'].split('/')
+    if form_data['perpara'] == '':
+        sens_exp = False
+    else:
+        sens_exp = True
+        para_per = form_data['perpara'].split('/')
+        para_bou =form_data['perboun'].split('/')
 
     # Climate data and ifs data
     ifs_data['SO4_zip']=form_data['SO4_file']
@@ -165,9 +171,12 @@ def main():
     
     num_threads=1
 
-    variable_vectors = CreateSampling(para_per,para_bou,n_ens)
+    if sens_exp:
+        variable_vectors = CreateSampling(para_per,para_bou,n_ens)
+    else:
+        variable_vectors=[]
     create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid,
-               model_class,model_config,fullpos_namelist,num_threads,variable_vectors)
+               model_class,model_config,fullpos_namelist,num_threads,sens_exp,variable_vectors)
     CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist)
 
     print('Done!')
