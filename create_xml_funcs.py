@@ -39,7 +39,7 @@ def CreateSampling(para_per,para_bou,n_ens):
             boundaries = bounds[1:].split(";")
             list_distrib.append(ot.Uniform(float(boundaries[0]), float(boundaries[1])))
         else:
-            raise Exception("Wrong type identifier in boundaries: only I and F are accepted")
+            raise Exception("Wrong type identifier in boundaries: only I and F are accepted.")
 
     # Create the composite distribution:
     distribution = ot.ComposedDistribution(list_distrib)
