@@ -12,7 +12,6 @@ from xml.dom import minidom
 import openturns as ot
 
 def CreateSampling(para_per,para_bou,n_ens):
-
     # Verify the size of the name and boundary of perturbed parameters:
     try:
         len(para_per) == len(para_bou)
@@ -44,6 +43,7 @@ def CreateSampling(para_per,para_bou,n_ens):
     # Create the composite distribution:
     distribution = ot.ComposedDistribution(list_distrib)
     distribution.setDescription(para_per)
+
     # Create the LHS sampling:
     experiment = ot.LHSExperiment(distribution, n_ens)
     out_table = experiment.generate()
@@ -131,8 +131,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
 
 
     # Read information from the configuration file
-    xmldoc2 = minidom.parse(project_dir+'oifs_workgen/config_dir/'+model_config)
-    
+    xmldoc2 = minidom.parse(project_dir+'oifs_workgen/config_dir/'+model_config)    
     model_configs = xmldoc2.getElementsByTagName('model_config')
     for model_config in model_configs:
         horiz_resolution = str(model_config.getElementsByTagName('horiz_resolution')[0].childNodes[0].nodeValue)
@@ -155,6 +154,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     num_timesteps = (int(params['fclen']) * sfac)/int(timestep)
     num_hours=int(params['fclen']) * hfac
     num_days=num_hours/24.
+
     # Throw an error if not cleanly divisible
     if not(isinstance(num_timesteps,int)):
         raise ValueError('Length of simulation does not divide equally by timestep')
@@ -178,7 +178,6 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     print("")
     print("Upload Interval (number of timesteps between uploads): "+str(int(upload_interval)))
     print("Number of uploads: "+str(number_of_uploads))
-
 
     # Read in the namelist template file
     with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :

@@ -78,9 +78,9 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
                 WUs.append(wu)
                 anc.Next()
                 count +=1
+
     # Add the workunits to the xml
-    outtreeroot.append(WUs)
-        
+    outtreeroot.append(WUs)        
     end_umid=params['unique_member_id'] 
 
     # Add in start and end umid to batch tags:
@@ -91,7 +91,6 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
 
     ######## Write out the file ########
     #Write overall tree stucture to output xml
-
     timestr = time.strftime("%Y%m%d-%H%M%S")
     xml_out='wu_oifs_'+batch['name'].replace(" ","")+"_" +start_umid + '_' + end_umid + '_'+timestr+'.xml'
     if not os.path.exists(proj_dir+'/oifs_workgen/xml_staging'):
@@ -102,6 +101,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     xmlstr = minidom.parseString(ET.tostring(outtreeroot)).toprettyxml(indent="   ")
     with open(proj_dir+"/oifs_workgen/xml_staging/"+xml_out, "w") as f:
             f.write(xmlstr)
+
     # Print out the number of xmls
     print("Number of workunits: "+str(count))
 
