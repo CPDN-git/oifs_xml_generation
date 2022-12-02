@@ -13,10 +13,7 @@ import openturns as ot
 
 def CreateSampling(para_per,para_bou,n_ens):
     # Verify the size of the name and boundary of perturbed parameters:
-    try:
-        len(para_per) == len(para_bou)
-    except:
-        raise Exception("Sensitivity: the number of parameters and boundaries are inconsistent.")
+    assert len(para_per) == len(para_bou), "Sensitivity: the number of parameters and boundaries are inconsistent."
 
     # Create the PDF:
     list_distrib = []
