@@ -110,6 +110,8 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data,sens_exp,parameters):
     for param,value in sorted(climate_data.items()):
         SubElement(clid, param).text=str(value)
 
+    if sens_exp:
+        Workunit.append(pp)
     Workunit.append(ica)
     Workunit.append(ifsd)
     Workunit.append(clid)
