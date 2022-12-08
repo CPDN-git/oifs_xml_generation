@@ -11,6 +11,14 @@ from xml.dom import minidom
 # Sampling imports
 import openturns as ot
 
+from socket import gethostname
+
+host=gethostname()
+if host=='caerus' or host =='hesperus':
+	project_dir='/storage/www/cpdnboinc/'
+elif host=='pandia':
+	project_dir='/storage/www/cpdnboinc_dev/'
+
 def CreateSampling(para_per,para_bou,n_ens):
     # Verify the size of the name and boundary of perturbed parameters:
     assert len(para_per) == len(para_bou), "Sensitivity: the number of parameters and boundaries are inconsistent."
@@ -122,7 +130,6 @@ def AddBatchInfo(batch):
 
 def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Set some paths to find the config file and 
-    project_dir = '/storage/www/cpdnboinc_dev/'
     ifs_ancil_dir = '/storage/cpdn_ancil_files/oifs_ancil_files/'
 
     date=dates[0]
