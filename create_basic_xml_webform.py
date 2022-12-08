@@ -52,7 +52,7 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     anc = ANC()
     anc.Start(start_umid) # next set
 
-    parameters=[]    
+    parameters={}   
     count=0
     for date in dates:
         params['start_year']=date[0:4]
