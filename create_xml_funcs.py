@@ -69,7 +69,7 @@ def get_upload_info(upload_loc):
     return upload_handler,upload_template
 
 # Take dictionary of parameters and add experiment to the xml
-def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
+def CreateWorkunit(params, ic_ancil,ifs_data,climate_data,sens_exp,parameters):
     # Set experiment and parameters tags and add to document
     Workunit=Element('workunit')
     WU_tree=ElementTree(Workunit)
@@ -77,6 +77,13 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
     for param,value in sorted(params.items()):
         SubElement(Workunit, param).text=str(value)
 	
+    # Add perturbed parameters
+    if sens_exp:
+        pp=Element('parameters')
+        pp_tree=ElementTree(pp)
+        for param,value in sorted(parameters.items()):
+            SubElement(pp, param).text=str(value)	
+
     # Add initial data file
     ica=Element('ic_ancil')
     ica_tree=ElementTree(ica)
@@ -88,11 +95,12 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
     ifsd_tree=ElementTree(ifsd)
     for param,value in sorted(ifs_data.items()):
         SubElement(ifsd, param).text=str(value)
-        # Add climate_data files
-        clid=Element('climate_data')
-        clid_tree=ElementTree(clid)
-        for param,value in sorted(climate_data.items()):
-            SubElement(clid, param).text=str(value)
+        
+    # Add climate_data files
+    clid=Element('climate_data')
+    clid_tree=ElementTree(clid)
+    for param,value in sorted(climate_data.items()):
+        SubElement(clid, param).text=str(value)
 
     Workunit.append(ica)
     Workunit.append(ifsd)

@@ -68,7 +68,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         echo "</pre>";
 	$arr= json_encode($_POST);
 	$escaped_arr=escapeshellarg($arr);
-	$r = escapeshellcmd( $python_env.' '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr); 
+	$r = escapeshellcmd( '/bin/python3 '.$oifs_path.'oifs_xml_generation/create_basic_xml_webform.py '.$escaped_arr); 
         $output = shell_exec($r.' 2>&1');
 	echo "<pre>$output</pre>";
 }

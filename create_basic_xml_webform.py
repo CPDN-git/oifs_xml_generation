@@ -51,7 +51,8 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     # Setup the umid counter
     anc = ANC()
     anc.Start(start_umid) # next set
-    
+
+    parameters=[]    
     count=0
     for date in dates:
         params['start_year']=date[0:4]
@@ -72,9 +73,9 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
                 if sens_exp:
                     variable_vector = variable_vectors[iens]
                     for ele in range(len(variables_name)):
-                        params['parameters'][str(variables_name[ele])] = variable_vector[ele]
+                        parameters[str(variables_name[ele])] = variable_vector[ele]
 
-                wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data)
+                wu=CreateWorkunit(params,ic_ancil,ifs_data,climate_data,sens_exp,parameters)
                 WUs.append(wu)
                 anc.Next()
                 count +=1
