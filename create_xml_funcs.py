@@ -4,6 +4,7 @@
 # Author  : Sarah Sparrow modified from CPDN script.
 # Purpose : functions for creating the openifs xml.
 
+import math
 from xml.etree.ElementTree import *
 from ANC import *
 from xml.dom import minidom
@@ -107,40 +108,55 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
         namelist_template = str(model_config.getElementsByTagName('namelist_template_global')[0].childNodes[0].nodeValue)
         wam_namelist_template = str(model_config.getElementsByTagName('wam_template_global')[0].childNodes[0].nodeValue)
 
+	
     # Calculate the number of timesteps from the number of days of the simulation
     if params['fclen_units'] == 'days':
-        sfac=86400
-        hfac=24
-    elif params['fclen_units'] == 'hours':
-        sfac=3600
-        hfac=1
-    
-    num_timesteps = (int(params['fclen']) * sfac)/int(timestep)
-    num_hours=int(params['fclen']) * hfac
-    num_days=num_hours/24.
-    # Throw an error if not cleanly divisible
-    if not(isinstance(num_timesteps,int)):
-        raise ValueError('Length of simulation does not divide equally by timestep')
+      num_timesteps = (int(params['fclen']) * 86400)/int(timestep)
+      print("timestep: "+str(timestep))
+      print("num_timesteps: "+str(num_timesteps))
+      print("fclen: "+str(int(params['fclen'])))
+      num_hours = int(params['fclen']) * 24
+      num_days = params['fclen']
 
-    # Set upload interval and number of uploads, upload_interval is the number of timesteps between uploads
-    if upload_frequency == 'daily':
-        upload_interval = num_timesteps / num_days
-    elif upload_frequency == 'weekly':
-        upload_interval = (num_timesteps / num_days) * 7
-    elif upload_frequency == 'monthly':
-        upload_interval = (num_timesteps / num_days) * 30
-    elif upload_frequency == 'yearly':
-        upload_interval = (num_timesteps / num_days) * 365
+      # Throw an error if not cleanly divisible
+      if int(num_timesteps) != num_timesteps:
+        raise ValueError('Length of simulation (in days) does not divide equally by timestep')
+-
+      # Set upload interval and number of uploads, upload_interval is the number of timesteps between uploads
+      if upload_frequency == 'daily':
+        upload_interval = num_timesteps / int(params['fclen'])
+      elif upload_frequency == 'weekly':
+        upload_interval = (num_timesteps / int(params['fclen'])) * 7
+      elif upload_frequency == 'monthly':
+        upload_interval = (num_timesteps / int(params['fclen'])) * 30
+      elif upload_frequency == 'yearly':
+        upload_interval = (num_timesteps / int(params['fclen'])) * 365
 
-    # Throw an error if not cleanly divisible
-    if not(upload_interval.is_integer()):
+      # Throw an error if not cleanly divisible
+      if int(upload_interval) != upload_interval:
         raise ValueError('The number of time steps does not divide equally by the upload frequency')
-    
-    number_of_uploads = int(num_timesteps/upload_interval)
-    #number_of_uploads = int(math.ceil(float(num_timesteps) / float(upload_interval)))
-    print("")
-    print("Upload Interval (number of timesteps between uploads): "+str(int(upload_interval)))
-    print("Number of uploads: "+str(number_of_uploads))
+
+    elif params['fclen_units'] == 'hours':
+      num_timesteps = (int(params['fclen']) * 3600)/int(timestep)
+      num_hours = int(params['fclen'])
+      num_days = str('{0:.3f}'.format(int(params['fclen']) * 0.041666667)) # Convert to days and round to three decimals figures
+
+      # Throw an error if not cleanly divisible
+      if not(isinstance(num_timesteps,int)):
+        raise ValueError('Length of simulation (in hours) does not divide equally by timestep')
+
+          # Set upload interval and number of uploads, upload_interval is the number of timesteps between uploads
+      if upload_frequency == 'hourly':
+        upload_interval = num_timesteps / int(params['fclen'])
+
+    number_of_uploads = int(math.ceil(float(num_timesteps) / float(upload_interval)))
+
+    print("upload_interval: "+str(upload_interval))
+    print("number_of_uploads: "+str(number_of_uploads))
+
+    # Throw an error if not cleanly divisible
+    if not(isinstance(number_of_uploads,int)):
+      raise ValueError('The total number of timesteps does not divide equally by the upload interval')
 
 
     # Read in the namelist template file
