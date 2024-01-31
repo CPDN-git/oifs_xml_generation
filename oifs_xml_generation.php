@@ -59,50 +59,50 @@ echo '<h2>To generate a submission xml enter the following information about you
 
 $user = get_logged_in_user();
 if (in_array($user->email_addr,$allowed_uploaders)){
-	echo "<p>$user->name is logged in</p>";
-	?>
-	<p><b>Use comma separated lists to enter mutliple values of fields (e.g. start date and batch owner) if required.</b></p>
-	<form id="oifs_xml_form" name="oifs_xml_form"  action="oifs_xml_handler.php" method="post" enctype="multipart/form-data">
-	
-	<div id="BatchInfo" name="BatchInfo">
+    echo "<p>$user->name is logged in</p>";
+    ?>
+    <p><b>Use comma separated lists to enter mutliple values of fields (e.g. start date and batch owner) if required.</b></p>
+    <form id="oifs_xml_form" name="oifs_xml_form"  action="oifs_xml_handler.php" method="post" enctype="multipart/form-data">
+    
+    <div id="BatchInfo" name="BatchInfo">
         <h3>Batch Information</h3>
-	<table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td Width=22%>Batch Project:</td><td width=78%><input type="text" name="BatchProj" value="OpenIFSATHOME"></td></tr>
-	<tr class="nohover"><td>Batch Name:</td><td><textarea id="BatchName" name="BatchName" rows="1" cols="80"></textarea></td></tr>
-	<tr class="nohover"><td>Batch Description:</td><td><textarea id="BatchDesc" name="BatchDesc" rows="3" cols="80"></textarea></td></tr>
-	<tr class="nohover"><td>Batch Owner(s). Enter as Name (e-mail):</td><td><textarea id="BatchOwner" name="BatchOwner" rows="1" cols="80"></textarea></td></tr>
-	<tr class="nohover"><td>Batch Technical Information:</td><td><textarea id="BatchTechInfo" name="BatchTechInfo" rows="3" cols="80"></textarea></td></tr>
-	</table>
-	</div>
-	
-	<div id="config" name="config">
-	<h3>Model Configuration Details</h3>
-	<table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td width=22%>Model Class:</td><td width=78%><input type="text" name="model_class" value="openifs"></td></tr>
-	<tr class="nohover"><td>Model Configuration File:</td><td><select id="model_config" name="model_config" class="dropdown">
-	<?php 
-	$files = array_slice(scandir($base_path.'/oifs_workgen/config_dir'), 2);	
-	foreach ($files as $file) {
-	if ($file=="43r3_t159l91.xml"){
-	echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
-	} else {
-    	echo "<option value=\"" .$file."\">" . $file. "</option>";
-	}
-	}
-	?>
-	</select></td></tr>
-	</table>
-	</div>
+    <table width="100%" border="0" style="border:none;">
+    <tr class="nohover"><td Width=22%>Batch Project:</td><td width=78%><input type="text" name="BatchProj" value="OpenIFSATHOME"></td></tr>
+    <tr class="nohover"><td>Batch Name:</td><td><textarea id="BatchName" name="BatchName" rows="1" cols="80"></textarea></td></tr>
+    <tr class="nohover"><td>Batch Description:</td><td><textarea id="BatchDesc" name="BatchDesc" rows="3" cols="80"></textarea></td></tr>
+    <tr class="nohover"><td>Batch Owner(s). Enter as Name (e-mail):</td><td><textarea id="BatchOwner" name="BatchOwner" rows="1" cols="80"></textarea></td></tr>
+    <tr class="nohover"><td>Batch Technical Information:</td><td><textarea id="BatchTechInfo" name="BatchTechInfo" rows="3" cols="80"></textarea></td></tr>
+    </table>
+    </div>
+    
+    <div id="config" name="config">
+    <h3>Model Configuration Details</h3>
+    <table width="100%" border="0" style="border:none;">
+    <tr class="nohover"><td width=22%>Model Class:</td><td width=78%><input type="text" name="model_class" value="openifs"></td></tr>
+    <tr class="nohover"><td>Model Configuration File:</td><td><select id="model_config" name="model_config" class="dropdown">
+    <?php 
+    $files = array_slice(scandir($base_path.'/oifs_workgen/config_dir'), 2);    
+    foreach ($files as $file) {
+    if ($file=="43r3_t159l91.xml"){
+    echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
+    } else {
+        echo "<option value=\"" .$file."\">" . $file. "</option>";
+    }
+    }
+    ?>
+    </select></td></tr>
+    </table>
+    </div>
 
-	<div id="setup" name="setup">
+    <div id="setup" name="setup">
         <h3>Ensemble Setup</h3>
-	<table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td width=22%>Start date(s) as YYYYMMDDHH:</td><td width=78%><textarea id="start_dates" name="start_dates" rows="1" cols="80"></textarea></td></tr>
-	<tr class="nohover"><td>Starting UMID:</td><td><input type="text" name="start_umid" value="a000"></td></tr>
-	<tr class="nohover"><td>Number of analyses (per start date):</td><td><input type="text" name="n_analysis"></td></tr>
-	<tr class="nohover"><td>Number of ensemble members (per analysis):</td><td><input type="text" name="n_ens"></td></tr>
-	<tr class="nohover"><td>Starting ensemble member number:</td><td><input type="text" name="s_ens" value="1"></td></tr>
-	<tr class="nohover"><td>Upload Location:</td><td><select id="upload_loc" name="upload_loc" class="dropdown">
+    <table width="100%" border="0" style="border:none;">
+    <tr class="nohover"><td width=22%>Start date(s) as YYYYMMDDHH:</td><td width=78%><textarea id="start_dates" name="start_dates" rows="1" cols="80"></textarea></td></tr>
+    <tr class="nohover"><td>Starting UMID:</td><td><input type="text" name="start_umid" value="a000"></td></tr>
+    <tr class="nohover"><td>Number of analyses (per start date):</td><td><input type="text" name="n_analysis"></td></tr>
+    <tr class="nohover"><td>Number of ensemble members (per analysis):</td><td><input type="text" name="n_ens"></td></tr>
+    <tr class="nohover"><td>Starting ensemble member number:</td><td><input type="text" name="s_ens" value="1"></td></tr>
+    <tr class="nohover"><td>Upload Location:</td><td><select id="upload_loc" name="upload_loc" class="dropdown">
                 <option value="0">Select...</option>
                 <option value="alpha">Alpha</option>
                 <option value="dev">Dev</option>
@@ -118,15 +118,15 @@ if (in_array($user->email_addr,$allowed_uploaders)){
                 <option value="upload11">Upload11</option>
                 <option value="upload12">Upload12</option>
                 </select></td></tr>
-	</table>
+    </table>
         </div>
 
-	<div id="ens_config" name="ens_config">
+    <div id="ens_config" name="ens_config">
         <h3>Ensemble Configuration</h3>
-	<table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td Width=22%>ECMWF Experiment ID:</td><td width=78%><input type="text" name="exptid"></td></tr>
+    <table width="100%" border="0" style="border:none;">
+    <tr class="nohover"><td Width=22%>ECMWF Experiment ID:</td><td width=78%><input type="text" name="exptid"></td></tr>
         <tr class="nohover"><td>Forecast Length:</td><td><input type="text" name="fclen">
-	<select id="fclen_units" name="fclen_units" class="dropdown">
+    <select id="fclen_units" name="fclen_units" class="dropdown">
                 <option value="days">Days</option>
                 <option value="hours">Hours</option>
                 </select></td></tr>
@@ -140,12 +140,12 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         }
         ?>
         </select></td></tr>
-	</table>
+    </table>
         </div>
 
-	<div id="ifsdata" name="ifsdata">
-	<h3>IFS data</h3>
-	<table width="100%" border="0" style="border:none;">
+    <div id="ifsdata" name="ifsdata">
+    <h3>IFS data</h3>
+    <table width="100%" border="0" style="border:none;">
         <tr class="nohover"><td Width=22%>SO4 File:</td><td width=78%><select id="SO4_file" name="SO4_file" class="dropdown" style="width: 25%;">
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/SO4_files'), 2);
@@ -180,13 +180,13 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         }
         }
         ?>
-	</table>
+    </table>
         </div>
 
-	<div id="climate_data" name="climate_data">
+    <div id="climate_data" name="climate_data">
         <h3>Climate Data</h3>
         <table width="100%" border="0" style="border:none;">
-	<tr class="nohover"><td Width=22%>Climate Data File:</td><td width=78%><select id="climate_data_file" name="climate_data_file" class="dropdown" style="width: 25%;">
+    <tr class="nohover"><td Width=22%>Climate Data File:</td><td width=78%><select id="climate_data_file" name="climate_data_file" class="dropdown" style="width: 25%;">
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/climate_data'), 2);
         foreach ($files as $file) {
@@ -198,16 +198,16 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         }
         ?>
         </table>
-	</div>
-	<br>
-	<br>
-	<input class="button" type="submit" name="submit" value="Create" />	
+    </div>
+    <br>
+    <br>
+    <input class="button" type="submit" name="submit" value="Create" /> 
 <form>
 
 <?php 
 }
 else {
-	echo "You are not allowed to visit this page";
-	}
+    echo "You are not allowed to visit this page";
+    }
 
 ?>
