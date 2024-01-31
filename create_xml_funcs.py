@@ -121,7 +121,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
       # Throw an error if not cleanly divisible
       if int(num_timesteps) != num_timesteps:
         raise ValueError('Length of simulation (in days) does not divide equally by timestep')
--
+
       # Set upload interval and number of uploads, upload_interval is the number of timesteps between uploads
       if upload_frequency == 'daily':
         upload_interval = num_timesteps / int(params['fclen'])
