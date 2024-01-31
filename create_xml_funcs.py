@@ -12,7 +12,7 @@ from xml.dom import minidom
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
         upload_info_dict={"alpha":("alpha","http://alpha.cpdn.org/cgi-bin/file_upload_handler"),\
-		"dev":("dev","https://dev.cpdn.org/cgi-bin/file_upload_handler"),\
+                "dev":("dev","https://dev.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload2":("upload2","http://upload2.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload3":("upload3","http://upload3.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload4":("upload4","http://upload4.cpdn.org/cgi-bin/file_upload_handler"),\
@@ -32,52 +32,52 @@ def get_upload_info(upload_loc):
 
 # Take dictionary of parameters and add experiment to the xml
 def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
-	# Set experiment and parameters tags and add to document
-	Workunit=Element('workunit')
-        WU_tree=ElementTree(Workunit)	
+        # Set experiment and parameters tags and add to document
+        Workunit=Element('workunit')
+        WU_tree=ElementTree(Workunit)   
 
-	# Loop over parameters and add
-	for param,value in sorted(params.iteritems()):
-		SubElement(Workunit, param).text=str(value)
+        # Loop over parameters and add
+        for param,value in sorted(params.iteritems()):
+                SubElement(Workunit, param).text=str(value)
 
-	
-	# Add initial data file
+        
+        # Add initial data file
         ica=Element('ic_ancil')
         ica_tree=ElementTree(ica)
-	for param,value in sorted(ic_ancil.iteritems()):
-                SubElement(ica, param).text=str(value)	
-	
-	# Add ifs_data files
-	ifsd=Element('ifsdata')
+        for param,value in sorted(ic_ancil.iteritems()):
+                SubElement(ica, param).text=str(value)  
+        
+        # Add ifs_data files
+        ifsd=Element('ifsdata')
         ifsd_tree=ElementTree(ifsd)
-	for param,value in sorted(ifs_data.iteritems()):
-        	SubElement(ifsd, param).text=str(value)
+        for param,value in sorted(ifs_data.iteritems()):
+                SubElement(ifsd, param).text=str(value)
 
-	# Add climate_data files
+        # Add climate_data files
         clid=Element('climate_data')
         clid_tree=ElementTree(clid)
         for param,value in sorted(climate_data.iteritems()):
                 SubElement(clid, param).text=str(value)
 
-	Workunit.append(ica)
-	Workunit.append(ifsd)
-	Workunit.append(clid)
-	return Workunit
+        Workunit.append(ica)
+        Workunit.append(ifsd)
+        Workunit.append(clid)
+        return Workunit
  
-	
+        
 
 
 # Adds batch tags to xml file
 def AddBatchInfo(batch):
-	# Add batch information files
+        # Add batch information files
         binf=Element('batch_info')
         binf_tree=ElementTree(binf)
         for param,value in sorted(batch.iteritems()):
                 SubElement(binf, param).text=str(value)
 
-	SubElement(binf, 'workunit_range').text="workunit_range"
-	SubElement(binf, 'batchid').text="batchid"
-	return binf
+        SubElement(binf, 'workunit_range').text="workunit_range"
+        SubElement(binf, 'batchid').text="batchid"
+        return binf
 
 def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Set some paths to find the config file and 
@@ -96,19 +96,22 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
 
     # Read information from the configuration file
     xmldoc2 = minidom.parse(project_dir+'oifs_workgen/config_dir/'+model_config)
-    
+
     model_configs = xmldoc2.getElementsByTagName('model_config')
     for model_config in model_configs:
         horiz_resolution = str(model_config.getElementsByTagName('horiz_resolution')[0].childNodes[0].nodeValue)
         vert_resolution = str(model_config.getElementsByTagName('vert_resolution')[0].childNodes[0].nodeValue)
         grid_type = str(model_config.getElementsByTagName('grid_type')[0].childNodes[0].nodeValue)
-        timestep = str(model_config.getElementsByTagName('timestep')[0].childNodes[0].nodeValue)
-        timestep_units = str(model_config.getElementsByTagName('timestep_units')[0].childNodes[0].nodeValue)
-        upload_frequency = str(model_config.getElementsByTagName('upload_frequency')[0].childNodes[0].nodeValue)
+        #GC, these are in the namelist template header, not in config
+        #timestep = str(model_config.getElementsByTagName('timestep')[0].childNodes[0].nodeValue)
+        #timestep_units = str(model_config.getElementsByTagName('timestep_units')[0].childNodes[0].nodeValue)
+        #upload_frequency = str(model_config.getElementsByTagName('upload_frequency')[0].childNodes[0].nodeValue)
         namelist_template = str(model_config.getElementsByTagName('namelist_template_global')[0].childNodes[0].nodeValue)
         wam_namelist_template = str(model_config.getElementsByTagName('wam_template_global')[0].childNodes[0].nodeValue)
 
-	
+
+"""
+#  forecast length (fclen) values are in the namelist template header, not the model config
     # Calculate the number of timesteps from the number of days of the simulation
     if params['fclen_units'] == 'days':
       num_timesteps = (int(params['fclen']) * 86400)/int(timestep)
@@ -157,7 +160,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Throw an error if not cleanly divisible
     if not(isinstance(number_of_uploads,int)):
       raise ValueError('The total number of timesteps does not divide equally by the upload interval')
-
+"""
 
     # Read in the namelist template file
     with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :
