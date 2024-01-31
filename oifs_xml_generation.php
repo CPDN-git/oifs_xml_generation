@@ -83,7 +83,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
 	<?php 
 	$files = array_slice(scandir($base_path.'/oifs_workgen/config_dir'), 2);	
 	foreach ($files as $file) {
-	if ($file=="40r1_T159.xml"){
+	if ($file=="43r3_t159l91.xml"){
 	echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
 	} else {
     	echo "<option value=\"" .$file."\">" . $file. "</option>";
@@ -150,7 +150,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/SO4_files'), 2);
         foreach ($files as $file) {
-        if ($file=="SO4.zip"){
+        if ($file=="SO4_159l_2.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";
@@ -162,7 +162,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/other_radiation_files'), 2);
         foreach ($files as $file) {
-        if ($file=="other_radiation.zip"){
+        if ($file=="other_radiation_159l_2.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";
@@ -173,7 +173,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/ifsdata/GHG_files'), 2);
         foreach ($files as $file) {
-        if ($file=="GHG.zip"){
+        if ($file=="GHG_159l_2.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";
@@ -190,7 +190,7 @@ if (in_array($user->email_addr,$allowed_uploaders)){
         <?php
         $files = array_slice(scandir($ancil_base_path.'/oifs_ancil_files/climate_data'), 2);
         foreach ($files as $file) {
-        if ($file=="climate_data.zip"){
+        if ($file=="climate.v015_159l_2.zip"){
         echo "<option selected=\"selected\" value=\"" .$file."\">" . $file. "</option>";
         } else {
         echo "<option value=\"" .$file."\">" . $file. "</option>";
