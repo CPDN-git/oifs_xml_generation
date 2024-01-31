@@ -110,8 +110,8 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
         wam_namelist_template = str(model_config.getElementsByTagName('wam_template_global')[0].childNodes[0].nodeValue)
 
 
-"""
-#  forecast length (fclen) values are in the namelist template header, not the model config
+    """
+    #  forecast length (fclen) values are in the namelist template header, not the model config
     # Calculate the number of timesteps from the number of days of the simulation
     if params['fclen_units'] == 'days':
       num_timesteps = (int(params['fclen']) * 86400)/int(timestep)
@@ -160,7 +160,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Throw an error if not cleanly divisible
     if not(isinstance(number_of_uploads,int)):
       raise ValueError('The total number of timesteps does not divide equally by the upload interval')
-"""
+    """
 
     # Read in the namelist template file
     with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :
@@ -177,11 +177,11 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
             line = line.replace('_HORIZ_RESOLUTION',horiz_resolution)
             line = line.replace('_VERT_RESOLUTION',vert_resolution)
             line = line.replace('_GRID_TYPE',grid_type)
-            line = line.replace('_NUM_TIMESTEPS',str(num_timesteps))
-            line = line.replace('_TIMESTEP',timestep)
-            line = line.replace('_UPLOAD_INTERVAL',str(int(upload_interval)))
+            #line = line.replace('_NUM_TIMESTEPS',str(num_timesteps))
+            #line = line.replace('_TIMESTEP',timestep)
+            #line = line.replace('_UPLOAD_INTERVAL',str(int(upload_interval)))
             line = line.replace('_ENSEMBLE_MEMBER_NUMBER',params['ensemble_member_number'])
-            line = line.replace('_NUM_HOURS',str(num_hours))
+            #line = line.replace('_NUM_HOURS',str(num_hours))
             # Remove commented lines
             if not line.startswith('!!'):
                 template_file=template_file+line
