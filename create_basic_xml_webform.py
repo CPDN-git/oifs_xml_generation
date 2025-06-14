@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # Program : create_basic_xml.py
 # Author  : Sarah Sparrow (modified from the CPDN script)
@@ -23,7 +23,7 @@ elif host=='pandia':
 	proj_dir='/storage/www/cpdnboinc_dev/'
 
 def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist,num_threads):
-    print "Creating experiments... "
+    print("Creating experiments... ")
     ic_ancil={}
     # Start the xml document
     outtreeroot=Element('batch')
@@ -87,14 +87,14 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
     xml_out='wu_oifs_'+batch['name'].replace(" ","")+"_" +start_umid + '_' + end_umid + '_'+timestr+'.xml'
     if not os.path.exists(proj_dir+'/oifs_workgen/xml_staging'):
         os.makedirs(proj_dir+'/oifs_workgen/xml_staging')
-    print 'Writing to:',xml_out,'...'
+    print('Writing to:',xml_out)
     #outtree.write('xmls/'+xml_out)
 
     xmlstr = minidom.parseString(ET.tostring(outtreeroot)).toprettyxml(indent="   ")
     with open(proj_dir+"/oifs_workgen/xml_staging/"+xml_out, "w") as f:
             f.write(xmlstr)
     # Print out the number of xmls
-    print "Number of workunits: ",count
+    print("Number of workunits: ",count)
 
 
 def main():
@@ -157,7 +157,7 @@ def main():
     create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist,num_threads)
     CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist)
 
-    print 'Done!'
+    print('Done!')
 
 if __name__ == "__main__":
     main()
