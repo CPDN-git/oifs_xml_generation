@@ -63,8 +63,8 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
         Workunit.append(ifsd)
         Workunit.append(clid)
         return Workunit
- 
-        
+
+
 
 
 # Adds batch tags to xml file
@@ -111,7 +111,8 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
 
 
     
-    #  forecast length (fclen) values are in the namelist template header, not the model config
+    # GC forecast length (fclen) values are in the namelist template header, not the model config
+    '''
     # Calculate the number of timesteps from the number of days of the simulation
     if params['fclen_units'] == 'days':
       num_timesteps = (int(params['fclen']) * 86400)/int(timestep)
@@ -160,6 +161,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Throw an error if not cleanly divisible
     if not(isinstance(number_of_uploads,int)):
       raise ValueError('The total number of timesteps does not divide equally by the upload interval')
+    '''
     
 
     # Read in the namelist template file
