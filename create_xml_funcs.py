@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # Program : create_xml_funcs.py
 # Author  : Sarah Sparrow modified from CPDN script.
@@ -37,26 +37,26 @@ def CreateWorkunit(params, ic_ancil,ifs_data,climate_data):
         WU_tree=ElementTree(Workunit)   
 
         # Loop over parameters and add
-        for param,value in sorted(params.iteritems()):
+        for param,value in sorted(params.items()):
                 SubElement(Workunit, param).text=str(value)
 
         
         # Add initial data file
         ica=Element('ic_ancil')
         ica_tree=ElementTree(ica)
-        for param,value in sorted(ic_ancil.iteritems()):
+        for param,value in sorted(ic_ancil.items()):
                 SubElement(ica, param).text=str(value)  
         
         # Add ifs_data files
         ifsd=Element('ifsdata')
         ifsd_tree=ElementTree(ifsd)
-        for param,value in sorted(ifs_data.iteritems()):
+        for param,value in sorted(ifs_data.items()):
                 SubElement(ifsd, param).text=str(value)
 
         # Add climate_data files
         clid=Element('climate_data')
         clid_tree=ElementTree(clid)
-        for param,value in sorted(climate_data.iteritems()):
+        for param,value in sorted(climate_data.items()):
                 SubElement(clid, param).text=str(value)
 
         Workunit.append(ica)
@@ -72,7 +72,7 @@ def AddBatchInfo(batch):
         # Add batch information files
         binf=Element('batch_info')
         binf_tree=ElementTree(binf)
-        for param,value in sorted(batch.iteritems()):
+        for param,value in sorted(batch.items()):
                 SubElement(binf, param).text=str(value)
 
         SubElement(binf, 'workunit_range').text="workunit_range"
@@ -110,7 +110,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
         wam_namelist_template = str(model_config.getElementsByTagName('wam_template_global')[0].childNodes[0].nodeValue)
 
 
-    """
+    
     #  forecast length (fclen) values are in the namelist template header, not the model config
     # Calculate the number of timesteps from the number of days of the simulation
     if params['fclen_units'] == 'days':
@@ -160,7 +160,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     # Throw an error if not cleanly divisible
     if not(isinstance(number_of_uploads,int)):
       raise ValueError('The total number of timesteps does not divide equally by the upload interval')
-    """
+    
 
     # Read in the namelist template file
     with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :
