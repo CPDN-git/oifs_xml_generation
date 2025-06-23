@@ -130,6 +130,10 @@ def main():
     model_class=form_data['model_class']
     model_config=form_data['model_config']
     fullpos_namelist=form_data['fullpos_namelist']
+
+    num_threads = 1
+    if '_omp_' in model_config:
+        num_threads = 4         # this is the default threads for multithreaded OpenIFS
     
     # Parameters for simulations
     params['exptid']=form_data['exptid']
@@ -152,8 +156,6 @@ def main():
     batch['tech_info']=form_data['BatchTechInfo']
     batch['proj']=form_data['BatchProj']
     
-    num_threads=1
-
     create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens, upload_loc, start_umid, model_class, model_config,fullpos_namelist,num_threads)
     CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist)
 
