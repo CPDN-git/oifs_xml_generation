@@ -17,7 +17,7 @@ from socket import gethostname
 
 
 host=gethostname()
-if host=='caerus' or host =='hesperus':
+if host=='aurai' or host =='hesperus':
     proj_dir='/storage/www/cpdnboinc/'
 elif host=='pandia':
     proj_dir='/storage/www/cpdnboinc_dev/'

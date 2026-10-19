@@ -50,9 +50,7 @@ Model configuration lookup is now shared between PHP and Python. Before treating
 the complete generation flow as ready on aurai, the following separate Python
 issues still need review:
 
-- `create_basic_xml_webform.py` selects a project directory for `caerus`,
-  `hesperus`, and `pandia`, but not `aurai`.
-- Its argument decoder strips backslashes and uses `literal_eval` on the JSON
+- `create_basic_xml_webform.py` strips backslashes and uses `literal_eval` on the JSON
   payload. Quotes, backslashes and multiline metadata can fail or be altered;
   the backend should decode the JSON supplied by PHP directly.
 - `create_xml_funcs.py` still hard-codes `/storage/www/cpdnboinc_dev/` for namelist
