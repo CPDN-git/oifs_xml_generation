@@ -10,6 +10,14 @@ from xml.etree.ElementTree import *
 from ANC import *
 from xml.dom import minidom
 
+def get_xml_staging_dir():
+    """Locate XML output using the repository root supplied by the caller."""
+    repo_root = os.environ.get('OIFS_REPO_ROOT')
+    if not repo_root or not os.path.isabs(repo_root):
+        raise RuntimeError('OIFS_REPO_ROOT must specify the absolute OpenIFS repository root')
+    return os.path.join(os.path.normpath(repo_root), 'oifs_workgen', 'xml_staging')
+
+
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
         upload_info_dict={"alpha":("alpha","http://alpha.cpdn.org/cgi-bin/file_upload_handler"),\
@@ -81,8 +89,7 @@ def AddBatchInfo(batch):
         return binf
 
 def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
-    # Set some paths to find the config file and 
-    project_dir = '/storage/www/cpdnboinc_dev/'
+    # Ancillary files remain in their configured server storage layout.
     ifs_ancil_dir = '/storage/cpdn_ancil_files/oifs_ancil_files/'
 
     date=dates[0]
@@ -99,6 +106,9 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     config_dir = os.environ.get('OIFS_CONFIG_DIR')
     if not config_dir or not os.path.isabs(config_dir):
         raise RuntimeError('OIFS_CONFIG_DIR must specify the absolute model configuration directory')
+    # configs/oifs and namelists/oifs belong to the same oifs_workgen repository.
+    workgen_root = os.path.dirname(os.path.dirname(os.path.normpath(config_dir)))
+    namelist_dir = os.path.join(workgen_root, 'namelists', 'oifs')
     xmldoc2 = minidom.parse(os.path.join(config_dir, model_config))
 
     model_configs = xmldoc2.getElementsByTagName('model_config')
@@ -169,7 +179,7 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
     
 
     # Read in the namelist template file
-    with open(project_dir+'oifs_workgen/namelist_template_files/'+namelist_template, 'r') as namelist_file :
+    with open(os.path.join(namelist_dir, namelist_template), 'r') as namelist_file:
         template_file = ''
         for line in namelist_file:
             # Replace the values

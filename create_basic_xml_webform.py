@@ -13,16 +13,9 @@ from ast import literal_eval
 
 from create_xml_funcs import *
 
-from socket import gethostname
-
-
-host=gethostname()
-if host=='aurai' or host =='hesperus':
-    proj_dir='/storage/www/cpdnboinc/'
-elif host=='pandia':
-    proj_dir='/storage/www/cpdnboinc_dev/'
 
 def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,upload_loc,start_umid, model_class,model_config, fullpos_namelist,num_threads):
+    staging_dir = get_xml_staging_dir()
     print("Creating experiments... ")
     ic_ancil={}
     # Start the xml document
@@ -85,14 +78,13 @@ def create_xml(batch,params,ifs_data,climate_data,dates,n_analysis,n_ens,s_ens,u
 
     timestr = time.strftime("%Y%m%d-%H%M%S")
     xml_out='wu_oifs_'+batch['name'].replace(" ","")+"_" +start_umid + '_' + end_umid + '_'+timestr+'.xml'
-    if not os.path.exists(proj_dir+'/oifs_workgen/xml_staging'):
-        os.makedirs(proj_dir+'/oifs_workgen/xml_staging')
-    print('Writing to:',xml_out)
-    #outtree.write('xmls/'+xml_out)
+    xml_path = os.path.join(staging_dir, xml_out)
+    os.makedirs(staging_dir, exist_ok=True)
 
     xmlstr = minidom.parseString(ET.tostring(outtreeroot)).toprettyxml(indent="   ")
-    with open(proj_dir+"/oifs_workgen/xml_staging/"+xml_out, "w") as f:
-            f.write(xmlstr)
+    with open(xml_path, "w") as f:
+        f.write(xmlstr)
+    print('XML file written:', xml_path)
     # Print out the number of xmls
     print("Number of workunits: ",count)
 

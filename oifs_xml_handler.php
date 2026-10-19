@@ -100,6 +100,7 @@ if ($availability_errors) {
 // Quote each positional argument separately, using the configured Python environment.
 // Scope the environment setting to this child process, not the PHP worker.
 $command = 'OIFS_CONFIG_DIR=' . escapeshellarg($oifs_config_dir) . ' '
+    . 'OIFS_REPO_ROOT=' . escapeshellarg($oifs_repo_root) . ' '
     . implode(' ', array_map('escapeshellarg', array($python_env, $script, $payload)));
 $output = array();
 $exit_status = 1;

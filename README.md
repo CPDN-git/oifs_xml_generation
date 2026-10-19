@@ -39,11 +39,26 @@ directories and files must be readable by PHP. The handler uses the configured
 Python executable to run `$oifs_repo_root/oifs_xml_generation/create_basic_xml_webform.py`. This deployment
 script does not copy or execute Python files.
 
-The handler passes `$oifs_config_dir` to Python as the child-process environment
-variable `OIFS_CONFIG_DIR`. `CreateFort4` uses it to read the selected model XML,
-so PHP and Python use the same directory. Deploy the updated `create_xml_funcs.py`
-alongside the PHP changes. For command-line Python generation, export
-`OIFS_CONFIG_DIR` explicitly; there is no fallback to the old `config_dir` path.
+The handler passes two child-process environment variables to Python:
+
+- `OIFS_CONFIG_DIR` from `$oifs_config_dir`, used by `CreateFort4` to read model XML.
+- `OIFS_REPO_ROOT` from `$oifs_repo_root`, used by both generators to locate
+  `oifs_workgen/xml_staging`.
+
+Deploy the updated Python scripts and `create_xml_funcs.py` alongside the PHP
+changes. For command-line generation, export both variables explicitly; there is
+no fallback to hostname-based paths or the old `config_dir` directory.
+
+On aurai, submission XML is written to
+`/home/boinc/cpdnboinc/oifs_workgen/xml_staging`. Both generators print
+`XML file written: <full path>` only after successfully writing and closing the
+file. This occurs before the `fort.4` preview is generated; a later preview failure
+does not remove the XML already written.
+
+Namelist templates are read from `namelists/oifs` in the same `oifs_workgen`
+repository as `configs/oifs`. For the aurai configuration above, this resolves to
+`/home/boinc/cpdnboinc/oifs_workgen/namelists/oifs`; template filenames come from
+the selected model XML. No separate template-directory setting is required.
 
 ## Backend follow-up
 
@@ -54,8 +69,6 @@ issues still need review:
 - `create_basic_xml_webform.py` strips backslashes and uses `literal_eval` on the JSON
   payload. Quotes, backslashes and multiline metadata can fail or be altered;
   the backend should decode the JSON supplied by PHP directly.
-- `create_xml_funcs.py` still hard-codes `/storage/www/cpdnboinc_dev/` for namelist
-  template lookup in `CreateFort4`. Model XML lookup now uses `OIFS_CONFIG_DIR`.
 
 The GitHub form defaults are retained. The server-only sensitivity experiment
 fields are intentionally absent.
