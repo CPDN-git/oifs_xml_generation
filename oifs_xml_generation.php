@@ -58,8 +58,6 @@ echo '<p>Enter the following information to generate submission XML.</p>';
     <tr class="nohover"><td>Starting ensemble member number:</td><td><input type="number" min="1" step="1" name="s_ens" required value="1"></td></tr>
     <tr class="nohover"><td>Upload Location:</td><td><select id="upload_loc" name="upload_loc" required class="dropdown">
                 <option value="">Select...</option>
-                <option value="alpha">Alpha</option>
-                <option value="dev">Dev</option>
                 <option value="upload2">Upload2</option>
                 <option value="upload3">Upload3</option>
                 <option value="upload4">Upload4</option>
