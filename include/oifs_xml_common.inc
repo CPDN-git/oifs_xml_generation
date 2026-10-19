@@ -12,7 +12,7 @@ if (!is_readable($config_file)) {
 }
 require_once($config_file);
 
-foreach (array('project_path', 'base_path', 'ancil_base_path', 'oifs_path', 'python_env') as $setting) {
+foreach (array('project_path', 'oifs_config_dir', 'ancil_base_path', 'oifs_path', 'python_env') as $setting) {
     if (!isset($$setting) || !is_string($$setting) || $$setting === '') {
         error_log('Missing XML generation configuration setting: ' . $setting);
         http_response_code(500);
@@ -96,10 +96,10 @@ function oifs_xml_error($status, $message)
 
 function oifs_xml_directories()
 {
-    global $base_path, $ancil_base_path;
+    global $oifs_config_dir, $ancil_base_path;
     $ancils = rtrim($ancil_base_path, '/') . '/oifs_ancil_files/';
     return array(
-        'model_config' => rtrim($base_path, '/') . '/oifs_workgen/config_dir',
+        'model_config' => rtrim($oifs_config_dir, '/'),
         'fullpos_namelist' => $ancils . 'fullpos_namelist',
         'SO4_file' => $ancils . 'ifsdata/SO4_files',
         'Rad_file' => $ancils . 'ifsdata/other_radiation_files',

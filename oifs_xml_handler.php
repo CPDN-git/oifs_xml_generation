@@ -91,7 +91,9 @@ if (!is_executable($python_env) || !is_file($script) || !is_readable($script) ||
     oifs_xml_error(500, 'The XML generator is unavailable. Please contact the server administrator.');
 }
 // Quote each positional argument separately, using the configured Python environment.
-$command = implode(' ', array_map('escapeshellarg', array($python_env, $script, $payload)));
+// Scope the environment setting to this child process, not the PHP worker.
+$command = 'OIFS_CONFIG_DIR=' . escapeshellarg($oifs_config_dir) . ' '
+    . implode(' ', array_map('escapeshellarg', array($python_env, $script, $payload)));
 $output = array();
 $exit_status = 1;
 try {

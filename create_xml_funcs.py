@@ -5,6 +5,7 @@
 # Purpose : functions for creating the openifs xml.
 
 import math
+import os
 from xml.etree.ElementTree import *
 from ANC import *
 from xml.dom import minidom
@@ -95,7 +96,10 @@ def CreateFort4(params,dates,s_ens,start_umid,model_config,fullpos_namelist):
 
 
     # Read information from the configuration file
-    xmldoc2 = minidom.parse(project_dir+'oifs_workgen/config_dir/'+model_config)
+    config_dir = os.environ.get('OIFS_CONFIG_DIR')
+    if not config_dir or not os.path.isabs(config_dir):
+        raise RuntimeError('OIFS_CONFIG_DIR must specify the absolute model configuration directory')
+    xmldoc2 = minidom.parse(os.path.join(config_dir, model_config))
 
     model_configs = xmldoc2.getElementsByTagName('model_config')
     for model_config in model_configs:
