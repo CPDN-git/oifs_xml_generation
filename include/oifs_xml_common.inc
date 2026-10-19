@@ -1,7 +1,7 @@
 <?php
 
-// The deployed pages live in html/user/cpdn; BOINC expects html/user as cwd.
-if (!chdir(__DIR__ . '/../..')) {
+// This helper is deployed in html/project; BOINC expects html/user as cwd.
+if (!chdir(__DIR__ . '/../user')) {
     http_response_code(500);
     exit('Unable to select the BOINC web directory.');
 }
@@ -24,16 +24,18 @@ foreach (array('project_path', 'base_path', 'ancil_base_path', 'oifs_path', 'pyt
 define('CPDN_LOCAL', rtrim($project_path, '/') . '/html/user/cpdn');
 define('BOINC_INC', rtrim($project_path, '/') . '/html/inc/');
 define('LOCAL_INC', CPDN_LOCAL . '/include/');
+define('PROJECT_INC', rtrim($project_path, '/') . '/html/project/');
 
 set_include_path(
     get_include_path() .
     PATH_SEPARATOR . BOINC_INC .
     PATH_SEPARATOR . CPDN_LOCAL .
-    PATH_SEPARATOR . LOCAL_INC
+    PATH_SEPARATOR . LOCAL_INC .
+    PATH_SEPARATOR . PROJECT_INC
 );
 require_once(BOINC_INC . 'util.inc');
 require_once(BOINC_INC . 'user.inc');
-require_once(LOCAL_INC . 'oifs_uploaders.inc');
+require_once(PROJECT_INC . 'oifs_uploaders.inc');
 
 // Return to the complete /cpdn URL after login, including for handler requests.
 $user = get_logged_in_user(false);

@@ -7,14 +7,16 @@ Scripts and webpages for generating OpenIFS@home submission XML files.
 Run `./do_deploy.sh` on the server. It deploys:
 
 - `oifs_xml_generation.php` and `oifs_xml_handler.php` to `/storage/www/cpdnboinc/html/user/cpdn`.
-- `include/oifs_xml_common.inc` to that directory's `include` subdirectory.
+- `include/oifs_xml_common.inc` to `/storage/www/cpdnboinc/html/project`.
+
+All `.inc` files are routed to `html/project`.
 
 The script uses the same comparison rules as `oifs_webpages`: identical files
 are skipped, newer deployed files are retained, older deployed files are
 replaced, and differing files with equal timestamps are retained with a message.
 Missing files are copied. File arrays contain one filename per line.
 
-The following site-managed files must already exist in `html/user/cpdn/include`:
+The following site-managed files must already exist in `html/project`:
 
 - `batch_site_config.inc`, supplying the host-specific `$project_path`,
   `$base_path`, `$ancil_base_path`, `$oifs_path`, and `$python_env` settings.

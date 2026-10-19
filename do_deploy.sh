@@ -7,11 +7,16 @@ set -e
 
 HTMLROOT="/storage/www/cpdnboinc/html/user"
 DEPLOYDIR="$HTMLROOT/cpdn"
+PROJECTDIR="/storage/www/cpdnboinc/html/project"
 REPODIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 deploy_file() {
     local target_dir="$1"
     local repo_file="$2"
+    # Project-specific .inc files belong outside the public webpage directory.
+    if [[ "$repo_file" == *.inc ]]; then
+        target_dir="$PROJECTDIR"
+    fi
     local deployed_file="$target_dir/$(basename -- "$repo_file")"
     local compare_status
 
@@ -59,14 +64,14 @@ cpdn_pages=(
     oifs_xml_handler.php
 )
 
-local_includes=(
+project_includes=(
     include/oifs_xml_common.inc
 )
 
 # Deploy the shared helper before pages that require it.
-for include_file in "${local_includes[@]}"
+for include_file in "${project_includes[@]}"
 do
-    deploy_file "$DEPLOYDIR/include" "$REPODIR/$include_file"
+    deploy_file "$PROJECTDIR" "$REPODIR/$include_file"
 done
 
 for page in "${cpdn_pages[@]}"
