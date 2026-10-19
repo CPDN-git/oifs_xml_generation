@@ -21,7 +21,7 @@ foreach (array('project_path', 'base_path', 'ancil_base_path', 'oifs_path', 'pyt
 }
 
 // Server-side paths come from the host configuration; browser paths start with /.
-define('CPDN_LOCAL', rtrim($project_path, '/') . '/html/user/cpdn');
+define('CPDN_LOCAL', rtrim($project_path, '/') . '/html/user/project');
 define('BOINC_INC', rtrim($project_path, '/') . '/html/inc/');
 define('PROJECT_INC', rtrim($project_path, '/') . '/html/project/');
 
@@ -35,10 +35,10 @@ require_once(BOINC_INC . 'util.inc');
 require_once(BOINC_INC . 'user.inc');
 require_once(PROJECT_INC . 'oifs_uploaders.inc');
 
-// Return to the complete /cpdn URL after login, including for handler requests.
+// Return to the complete /project URL after login, including for handler requests.
 $user = get_logged_in_user(false);
 if (!$user) {
-    header('Location: /login_form.php?next_url=' . rawurlencode('cpdn/oifs_xml_generation.php'));
+    header('Location: /login_form.php?next_url=' . rawurlencode('project/oifs_xml_generation.php'));
     exit;
 }
 if (!isset($allowed_uploaders) || !is_array($allowed_uploaders)) {
@@ -89,7 +89,7 @@ function oifs_xml_error($status, $message)
     http_response_code($status);
     oifs_xml_page_start('OpenIFS ensemble generation error');
     echo '<p>' . oifs_xml_escape($message) . '</p>';
-    echo '<p><a href="/cpdn/oifs_xml_generation.php">Return to the ensemble form</a></p>';
+    echo '<p><a href="/project/oifs_xml_generation.php">Return to the ensemble form</a></p>';
     oifs_xml_page_end();
     exit;
 }

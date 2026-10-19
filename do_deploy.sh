@@ -6,7 +6,7 @@
 set -e
 
 HTMLROOT="/storage/www/cpdnboinc/html/user"
-DEPLOYDIR="$HTMLROOT/cpdn"
+DEPLOYDIR="$HTMLROOT/project"
 PROJECTDIR="/storage/www/cpdnboinc/html/project"
 REPODIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -59,7 +59,7 @@ deploy_file() {
 
 echo "Deploying OIFS XML generation webpages into position on live server.."
 
-cpdn_pages=(
+project_pages=(
     oifs_xml_generation.php
     oifs_xml_handler.php
 )
@@ -74,7 +74,7 @@ do
     deploy_file "$PROJECTDIR" "$REPODIR/$include_file"
 done
 
-for page in "${cpdn_pages[@]}"
+for page in "${project_pages[@]}"
 do
     deploy_file "$DEPLOYDIR" "$REPODIR/$page"
 done

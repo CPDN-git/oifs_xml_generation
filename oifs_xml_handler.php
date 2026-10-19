@@ -108,5 +108,5 @@ oifs_xml_page_start('OpenIFS@home Ensemble Generation Result');
 echo '<p>' . ($exit_status === 0 ? 'XML generation completed.' :
     'XML generation failed. Please contact the server administrator before retrying.') . '</p>';
 echo '<pre>' . oifs_xml_escape(implode("\n", $output)) . '</pre>';
-echo '<p><a href="/cpdn/oifs_xml_generation.php">Return to the ensemble form</a></p>';
+echo '<p><a href="/project/oifs_xml_generation.php">Return to the ensemble form</a></p>';
 oifs_xml_page_end();

@@ -37,7 +37,7 @@ echo '<p>' . oifs_xml_escape($user->name) . ' is logged in</p>';
 echo '<p>Enter the following information to generate submission XML.</p>';
 ?>
     <p><b>Use comma separated lists to enter multiple values of fields (e.g. start date and batch owner) if required.</b></p>
-    <form id="oifs_xml_form" name="oifs_xml_form"  action="/cpdn/oifs_xml_handler.php" method="post" enctype="multipart/form-data">
+    <form id="oifs_xml_form" name="oifs_xml_form"  action="/project/oifs_xml_handler.php" method="post" enctype="multipart/form-data">
 
     <div id="BatchInfo">
         <h3>Batch Information</h3>

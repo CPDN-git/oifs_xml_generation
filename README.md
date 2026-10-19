@@ -6,7 +6,7 @@ Scripts and webpages for generating OpenIFS@home submission XML files.
 
 Run `./do_deploy.sh` on the server. It deploys:
 
-- `oifs_xml_generation.php` and `oifs_xml_handler.php` to `/storage/www/cpdnboinc/html/user/cpdn`.
+- `oifs_xml_generation.php` and `oifs_xml_handler.php` to `/storage/www/cpdnboinc/html/user/project`.
 - `include/oifs_xml_common.inc` to `/storage/www/cpdnboinc/html/project`.
 
 All `.inc` files are routed to `html/project`.
