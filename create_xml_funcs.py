@@ -20,8 +20,7 @@ def get_xml_staging_dir():
 
 def get_upload_info(upload_loc):
         # Dictionary of upload file handlers
-        upload_info_dict={"alpha":("alpha","http://alpha.cpdn.org/cgi-bin/file_upload_handler"),\
-                "dev":("dev","https://dev.cpdn.org/cgi-bin/file_upload_handler"),\
+        upload_info_dict={
                 "upload2":("upload2","http://upload2.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload3":("upload3","http://upload3.cpdn.org/cgi-bin/file_upload_handler"),\
                 "upload4":("upload4","http://upload4.cpdn.org/cgi-bin/file_upload_handler"),\
