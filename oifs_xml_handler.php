@@ -53,7 +53,7 @@ foreach ($dates as &$date) {
 unset($date);
 $form_data['start_dates'] = implode(',', $dates);
 if (!in_array($form_data['fclen_units'], array('days', 'hours'), true) ||
-    !in_array($form_data['upload_loc'], array('alpha', 'dev', 'upload2', 'upload3', 'upload4',
+    !in_array($form_data['upload_loc'], array('upload2', 'upload3', 'upload4',
         'upload5', 'upload6', 'upload7', 'upload8', 'upload9', 'upload10', 'upload11', 'upload12'), true)) {
     oifs_xml_error(400, 'Invalid forecast units or upload location.');
 }
