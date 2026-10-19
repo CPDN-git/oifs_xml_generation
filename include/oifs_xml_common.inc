@@ -12,7 +12,7 @@ if (!is_readable($config_file)) {
 }
 require_once($config_file);
 
-foreach (array('project_path', 'oifs_config_dir', 'ancil_base_path', 'oifs_path', 'python_env') as $setting) {
+foreach (array('project_path', 'oifs_config_dir', 'ancil_base_path', 'oifs_repo_root', 'python_env') as $setting) {
     if (!isset($$setting) || !is_string($$setting) || $$setting === '') {
         error_log('Missing XML generation configuration setting: ' . $setting);
         http_response_code(500);

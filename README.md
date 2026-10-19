@@ -19,7 +19,7 @@ Missing files are copied. File arrays contain one filename per line.
 The following site-managed files must already exist in `html/project`:
 
 - `batch_site_config.inc`, supplying the host-specific `$project_path`,
-  `$oifs_config_dir`, `$ancil_base_path`, `$oifs_path`, and `$python_env` settings.
+  `$oifs_config_dir`, `$ancil_base_path`, `$oifs_repo_root`, and `$python_env` settings.
 - `oifs_uploaders.inc`, supplying the `$allowed_uploaders` email array.
 
 BOINC libraries remain in `html/inc`. The PHP pages change working directory to
@@ -30,12 +30,13 @@ The form and handler read model configurations from `$oifs_config_dir`. On aurai
 set this in the server's `html/project/batch_site_config.inc`:
 
 ```php
-$oifs_config_dir = '/home/boinc/cpdnboinc/oifs_workgen/configs/oifs';
+$oifs_repo_root = '/home/boinc/cpdnboinc/';
+$oifs_config_dir = $oifs_repo_root . 'oifs_workgen/configs/oifs';
 ```
 
 Ancillary selections remain under `$ancil_base_path/oifs_ancil_files`. All selection
 directories and files must be readable by PHP. The handler uses the configured
-Python executable to run `$oifs_path/oifs_xml_generation/create_basic_xml_webform.py`. This deployment
+Python executable to run `$oifs_repo_root/oifs_xml_generation/create_basic_xml_webform.py`. This deployment
 script does not copy or execute Python files.
 
 The handler passes `$oifs_config_dir` to Python as the child-process environment

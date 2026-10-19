@@ -74,9 +74,28 @@ $payload = json_encode($form_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICO
 if ($payload === false) {
     oifs_xml_error(400, 'The form contains text that could not be encoded. Please use UTF-8 text.');
 }
-$script = rtrim($oifs_path, '/') . '/oifs_xml_generation/create_basic_xml_webform.py';
-if (!is_executable($python_env) || !is_file($script) || !is_readable($script) || !is_callable('exec')) {
-    oifs_xml_error(500, 'The XML generator is unavailable. Please contact the server administrator.');
+$script = rtrim($oifs_repo_root, '/') . '/oifs_xml_generation/create_basic_xml_webform.py';
+$availability_errors = array();
+if (!is_file($python_env)) {
+    $availability_errors[] = 'The configured Python executable was not found or is not a regular file: '
+        . $python_env . '. Check $python_env in html/project/batch_site_config.inc and parent-directory permissions.';
+} elseif (!is_executable($python_env)) {
+    $availability_errors[] = 'The PHP worker cannot execute the configured Python interpreter: '
+        . $python_env . '. Check executable permissions and directory access for the PHP worker account.';
+}
+if (!is_file($script)) {
+    $availability_errors[] = 'The XML generator script was not found or is not a regular file: '
+        . $script . '. Check $oifs_repo_root in html/project/batch_site_config.inc, the repository location, and parent-directory permissions.';
+} elseif (!is_readable($script)) {
+    $availability_errors[] = 'The PHP worker cannot read the XML generator script: '
+        . $script . '. Check file permissions and directory access for the PHP worker account.';
+}
+if (!is_callable('exec')) {
+    $availability_errors[] = 'PHP exec() is unavailable. Check disable_functions in the web worker PHP configuration (PHP-FPM or Apache), which may differ from command-line PHP.';
+}
+if ($availability_errors) {
+    error_log('Ensemble generator unavailable: ' . implode(' ', $availability_errors));
+    oifs_xml_error(500, implode(' ', $availability_errors));
 }
 // Quote each positional argument separately, using the configured Python environment.
 // Scope the environment setting to this child process, not the PHP worker.
@@ -88,15 +107,21 @@ try {
     exec($command . ' 2>&1', $output, $exit_status);
 } catch (Throwable $error) {
     error_log('Ensemble generator could not start: ' . $error->getMessage());
-    oifs_xml_error(500, 'Unable to start XML generation. Please contact the server administrator.');
+    oifs_xml_error(500, 'Unable to start XML generation using ' . $python_env . ' and ' . $script
+        . ': ' . $error->getMessage());
 }
 if ($exit_status !== 0) {
     http_response_code(500);
-    error_log('Ensemble generation failed: ' . implode("\n", $output));
+    error_log('Ensemble generation failed (exit status ' . $exit_status . ') using ' . $python_env
+        . ' and ' . $script . ': ' . implode("\n", $output));
 }
 oifs_xml_page_start('OpenIFS@home Ensemble Generation Result');
 echo '<p>' . ($exit_status === 0 ? 'XML generation completed.' :
-    'XML generation failed. Please contact the server administrator before retrying.') . '</p>';
+    'XML generation failed (exit status ' . $exit_status . '). See the generator output below and contact the server administrator before retrying.') . '</p>';
+if ($exit_status !== 0) {
+    echo '<p>Python interpreter: ' . oifs_xml_escape($python_env)
+        . '<br>Generator script: ' . oifs_xml_escape($script) . '</p>';
+}
 echo '<pre>' . oifs_xml_escape(implode("\n", $output)) . '</pre>';
 echo '<p><a href="/project/oifs_xml_generation.php">Return to the ensemble form</a></p>';
 oifs_xml_page_end();
