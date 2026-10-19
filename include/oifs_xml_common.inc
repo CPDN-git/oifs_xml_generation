@@ -23,14 +23,12 @@ foreach (array('project_path', 'base_path', 'ancil_base_path', 'oifs_path', 'pyt
 // Server-side paths come from the host configuration; browser paths start with /.
 define('CPDN_LOCAL', rtrim($project_path, '/') . '/html/user/cpdn');
 define('BOINC_INC', rtrim($project_path, '/') . '/html/inc/');
-define('LOCAL_INC', CPDN_LOCAL . '/include/');
 define('PROJECT_INC', rtrim($project_path, '/') . '/html/project/');
 
 set_include_path(
     get_include_path() .
     PATH_SEPARATOR . BOINC_INC .
     PATH_SEPARATOR . CPDN_LOCAL .
-    PATH_SEPARATOR . LOCAL_INC .
     PATH_SEPARATOR . PROJECT_INC
 );
 require_once(BOINC_INC . 'util.inc');
