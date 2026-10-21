@@ -33,7 +33,7 @@ set_include_path(
 );
 require_once(BOINC_INC . 'util.inc');
 require_once(BOINC_INC . 'user.inc');
-require_once(PROJECT_INC . 'oifs_uploaders.inc');
+require_once(PROJECT_INC . 'allowed_uploaders.inc');
 
 // Return to the complete /project URL after login, including for handler requests.
 $user = get_logged_in_user(false);
