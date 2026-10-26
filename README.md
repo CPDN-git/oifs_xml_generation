@@ -11,20 +11,28 @@ Run `./do_deploy.sh` on the server. It deploys:
 
 All `.inc` files are routed to `html/project`.
 
-The script uses the same comparison rules as `oifs_webpages`: identical files
+The script uses the same comparison rules as `cpdn_webpages`: identical files
 are skipped, newer deployed files are retained, older deployed files are
 replaced, and differing files with equal timestamps are retained with a message.
-Missing files are copied. File arrays contain one filename per line.
+Missing files are copied. Destination symbolic links, including broken links,
+stop deployment without changing the link or its target. Comparison errors retain
+the underlying diagnostic and stop deployment; earlier files may already have been
+deployed. File arrays contain one filename per line.
 
-The following site-managed files must already exist in `html/project`:
+The following shared files, owned and deployed by `cpdn_webpages`, must already
+exist in `html/project`:
 
+- `cpdn_web_bootstrap.inc`, providing shared startup for each PHP page.
 - `batch_site_config.inc`, supplying the host-specific `$project_path`,
   `$oifs_config_dir`, `$ancil_base_path`, `$oifs_repo_root`, and `$python_env` settings.
-- `oifs_uploaders.inc`, supplying the `$allowed_uploaders` email array.
+- `allowed_uploaders.inc`, supplying the `$allowed_uploaders` email array.
 
-BOINC libraries remain in `html/inc`. The PHP pages change working directory to
-`html/user` before loading site configuration and BOINC. Error reporting and
-logging are controlled by the server configuration.
+BOINC libraries remain in `html/inc`. Each PHP page loads the bootstrap at page
+scope to change working directory to `html/user`, load site configuration and
+define include paths. It then loads `oifs_xml_common.inc` through `PROJECT_INC`;
+that helper retains XML-specific configuration checks and uploader authorization.
+The bootstrap is deployed by `cpdn_webpages`, not copied by this repository. Error
+reporting and logging are controlled by the server configuration.
 
 The form and handler read model configurations from `$oifs_config_dir`. On aurai,
 set this in the server's `html/project/batch_site_config.inc`:

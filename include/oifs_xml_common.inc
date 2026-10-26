@@ -1,17 +1,6 @@
 <?php
 
-// This helper is deployed in html/project; BOINC expects html/user as cwd.
-if (!chdir(__DIR__ . '/../user')) {
-    http_response_code(500);
-    exit('Unable to select the BOINC web directory.');
-}
-$config_file = __DIR__ . '/batch_site_config.inc';
-if (!is_readable($config_file)) {
-    http_response_code(500);
-    exit('Batch site configuration is unavailable.');
-}
-require_once($config_file);
-
+// The calling page loads cpdn_web_bootstrap.inc before this XML-specific helper.
 foreach (array('project_path', 'oifs_config_dir', 'ancil_base_path', 'oifs_repo_root', 'python_env') as $setting) {
     if (!isset($$setting) || !is_string($$setting) || $$setting === '') {
         error_log('Missing XML generation configuration setting: ' . $setting);
@@ -20,17 +9,6 @@ foreach (array('project_path', 'oifs_config_dir', 'ancil_base_path', 'oifs_repo_
     }
 }
 
-// Server-side paths come from the host configuration; browser paths start with /.
-define('CPDN_LOCAL', rtrim($project_path, '/') . '/html/user/project');
-define('BOINC_INC', rtrim($project_path, '/') . '/html/inc/');
-define('PROJECT_INC', rtrim($project_path, '/') . '/html/project/');
-
-set_include_path(
-    get_include_path() .
-    PATH_SEPARATOR . BOINC_INC .
-    PATH_SEPARATOR . CPDN_LOCAL .
-    PATH_SEPARATOR . PROJECT_INC
-);
 require_once(BOINC_INC . 'util.inc');
 require_once(BOINC_INC . 'user.inc');
 require_once(PROJECT_INC . 'allowed_uploaders.inc');

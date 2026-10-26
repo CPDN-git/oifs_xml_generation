@@ -4,7 +4,9 @@
 // Original Sarah Sparrow.
 // Mods: Glenn Carver & GPT6.
 
-require_once(__DIR__ . '/../../project/oifs_xml_common.inc');
+// Set the BOINC working directory, load site configuration, and define include paths.
+require_once __DIR__ . '/../../project/cpdn_web_bootstrap.inc';
+require_once(PROJECT_INC . 'oifs_xml_common.inc');
 
 // Check all external selection directories before sending the form HTML.
 $file_lists = array();
